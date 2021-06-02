@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta name="description" content="d1gg12&#39;s blog" />
+      
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>计算机图形学入门笔记 |  moon</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="https://gitee.com/d1gg12/blogimage/raw/master/blog's%20icon.png" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
+
+      <!-- mermaid -->
+      
+    </head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-计算机图形学"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  计算机图形学入门笔记
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/05/31/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/" class="article-date">
+  <time datetime="2021-05-31T08:10:37.000Z" itemprop="datePublished">2021-05-31</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%9B%BE%E5%BD%A2%E5%AD%A6/">图形学</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">6.9k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">24 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>学习计算机图形学时的笔记，只记录了一些重点</p>
+<span id="more"></span>
+
+<h1 id="计算机图形学简介"><a href="#计算机图形学简介" class="headerlink" title="计算机图形学简介"></a>计算机图形学简介</h1><p>全局光照越nb（画面越亮）画面就越nb</p>
+<p>推荐书籍Steve Marschner and Peter Shirley, “Fundamentals of Computer Graphics”, 3rd or later edition.</p>
+<h1 id="光栅化"><a href="#光栅化" class="headerlink" title="光栅化"></a>光栅化</h1><p>图形学中一般用单位向量表示一个方向。</p>
+<p>点积：计算两个向量的点乘可以计算他们之间的角度（判断大致是同向还是反向），可以计算两个方向上的投影，可以方便分解一个向量，</p>
+<p>叉积：用右手定则判断，</p>
+<p><img src="https://i.loli.net/2021/06/02/2gtPmXNjxpGVrRu.png" alt="image-20210414100706030"><br>判断向量的左右关系：如图计算 <strong>a</strong> X <strong>b</strong> 如果是正的，则说明b在a的左侧。</p>
+<p><img src="https://i.loli.net/2021/06/02/h5gbinfdmSR4UuK.png" alt="image-20210414100916773"><br>判断点的里外关系：如果<strong>AB</strong> X <strong>AP</strong> 为正（AP在AB左侧），<strong>BC</strong> X <strong>BP</strong> 为正（BP在BC左侧），<strong>CA</strong> X <strong>CP</strong> 为正（……），则P在三角形ABC内部。（这AB，BC，CA是三角形首位相接的三条边，如果方向反了，变成AC，CB，BA，也没有关系，此时AP，CP，BP都在左侧。所以只要叉积同向就能说明P在三角形内部）</p>
+<p>定义一些垂直的轴：定义坐标系，把一个空间向量分解到三个坐标轴上</p>
+<p><img src="https://i.loli.net/2021/06/02/RypmXkF86u9Kzae.png" alt="image-20210414102624017"><br>用矩阵来表示点乘和叉乘</p>
+<h2 id="变换-Transform"><a href="#变换-Transform" class="headerlink" title="变换 Transform"></a>变换 Transform</h2><p><img src="https://i.loli.net/2021/06/02/WxzprXtGuoBRikY.png" alt="image-20210414103217634"><br>使用其次坐标来表示2d的点和向量</p>
+<p><img src="https://i.loli.net/2021/06/02/kmj7pFgVlRzoCDv.png" alt="image-20210414103139552"><br><img src="https://i.loli.net/2021/06/02/aIMSKe8C3uo9twW.png" alt="image-20210414103340333"><br>例子：（注意矩阵乘法没有交换律，所以顺序很重要）</p>
+<p><img src="https://i.loli.net/2021/06/02/oQ6p9dVJnHfFRkv.png" alt="image-20210414103428460"><br>3d上的齐次坐标系（比二维的再多一维）</p>
+<p><img src="https://i.loli.net/2021/06/02/6E3u9yk1GqslS7o.png" alt="image-20210420192400182"><br><img src="https://i.loli.net/2021/06/02/1FkMsQnD9vVxcw5.png" alt="image-20210420192413126"><br>分别绕x轴，y轴，z轴旋转矩阵（连续乘这些矩阵实际上已经可以表示3维空间内任何一个方向）</p>
+<p><img src="https://i.loli.net/2021/06/02/FRsckM53obSzfLq.png" alt="image-20210414105342659"><br>罗德里格斯旋转公式</p>
+<h2 id="mvp变换"><a href="#mvp变换" class="headerlink" title="mvp变换"></a>mvp变换</h2><p>模型、视图、投影变换</p>
+<h3 id="正交投影Orthographic-Projection"><a href="#正交投影Orthographic-Projection" class="headerlink" title="正交投影Orthographic Projection"></a>正交投影Orthographic Projection</h3><p><img src="https://i.loli.net/2021/06/02/D4IR1Zb8hlGHYr5.png" alt="image-20210418213758963"><br>先按中心移到原点，再缩成1，1，1</p>
+<h3 id="透视投影Perspective-Projection"><a href="#透视投影Perspective-Projection" class="headerlink" title="透视投影Perspective Projection"></a>透视投影Perspective Projection</h3><p>1、把透视投影压成一个正交投影</p>
+<p><img src="https://i.loli.net/2021/06/02/tfo7BnmPd4yGDYC.png" alt="image-20210418214853667"><br>其中n为near离镜头近的距离，f为far离镜头远的距离</p>
+<p>2、计算正交投影</p>
+<p><img src="https://i.loli.net/2021/06/02/6f1yuxwVhRXCJ9G.png" alt="image-20210419201911176"><br>视口变换，</p>
+<h2 id="采样"><a href="#采样" class="headerlink" title="采样"></a>采样</h2><p>把模型在有限的像素上投影出来</p>
+<p>对于每个像素计算是否在三角形（某个模型）内，利用叉乘</p>
+<p>粗暴的计算二值（要么0完全没有，要么1全部颜色），将造成锯齿</p>
+<p>图形学中的采样效应：混叠，锯齿，摩尔纹，车轮现象</p>
+<p>原因：欠采样（采样频率过低，包括空间上或是时间上）</p>
+<p>解决方案：模糊（卷积，盒形平均，滤波等）</p>
+<p>特别的，有超采样抗锯齿（MSAA）</p>
+<p>原理是把一个像素当成四个像素点来计算，最后显示在屏幕上时则用这四个像素点是否有颜色来修改整个像素的深度</p>
+<p><img src="https://i.loli.net/2021/06/02/BPY6tA1zl5WEHix.png" alt="image-20210419212447834"><br>more</p>
+<h2 id="计算遮挡"><a href="#计算遮挡" class="headerlink" title="计算遮挡"></a>计算遮挡</h2><h3 id="画家算法-painter-algoihtm"><a href="#画家算法-painter-algoihtm" class="headerlink" title="画家算法 painter algoihtm"></a>画家算法 painter algoihtm</h3><p>对所有的三角形排远近，先画远的，再画近的。</p>
+<p>缺陷：遇到重叠交叉的三角形就没办法画了，比如下图</p>
+<p><img src="https://i.loli.net/2021/06/02/4cywqvnmCUYbfG6.png" alt="image-20210405193257649"></p>
+<h3 id="深度缓冲-Z-Buffer"><a href="#深度缓冲-Z-Buffer" class="headerlink" title="深度缓冲 Z-Buffer"></a>深度缓冲 Z-Buffer</h3><p>同时绘制帧缓存和深度缓存，对于每个三角形的每个像素，如果深度小于深度缓存中的这个像素，则在帧缓存中渲染成它的颜色，并在深度缓存中记录新的更小的深度值。</p>
+<p><img src="https://i.loli.net/2021/06/02/QDdlv9L4OniARoW.png" alt="image-20210405200051551"><br>例子：<img src="https://i.loli.net/2021/06/02/uo8bz7lUhAFs4SM.png" alt="image-20210405195840050"><br>优点：与先画哪个三角形的顺序无关</p>
+<h1 id="着色-Shading"><a href="#着色-Shading" class="headerlink" title="着色 Shading"></a>着色 Shading</h1><p> 图形学里实际就是上材质</p>
+<h2 id="Blinn-Phong-反射模型"><a href="#Blinn-Phong-反射模型" class="headerlink" title="Blinn-Phong 反射模型"></a>Blinn-Phong 反射模型</h2><p><img src="https://i.loli.net/2021/06/02/NDXusQTbOALVmdw.png" alt="image-20210410202816596"></p>
+<h3 id="漫反射-diffuse-reflection"><a href="#漫反射-diffuse-reflection" class="headerlink" title="漫反射 diffuse reflection"></a>漫反射 diffuse reflection</h3><p><img src="https://i.loli.net/2021/06/02/pwXHIx3cTC5Zioy.png" alt="image-20210410202901611"><br>实际上就是算光打到物体表面的能量</p>
+<p><img src="https://i.loli.net/2021/06/02/7gvu83GOTPnCNeY.png" alt="image-20210410202929580"></p>
+<h3 id="高光-specular-highlight"><a href="#高光-specular-highlight" class="headerlink" title="高光 specular highlight"></a>高光 specular highlight</h3><p>视角能看到多少光，实际上就是半程向量和法线之间夹角有多近</p>
+<p><img src="https://i.loli.net/2021/06/02/IreKH7utVbYX8TD.png" alt="image-20210410203317298"><br>如何取p的值 （通常用到100～200）</p>
+<p><img src="https://i.loli.net/2021/06/02/IsJjgOne6x4WbRm.png" alt="image-20210410203454009"></p>
+<h3 id="环境光（近似的）-ambient-lighting"><a href="#环境光（近似的）-ambient-lighting" class="headerlink" title="环境光（近似的） ambient lighting"></a>环境光（近似的） ambient lighting</h3><p>假设环境光照强度都是恒定的</p>
+<p><img src="https://i.loli.net/2021/06/02/IdJAzLFOu5c8Mqo.png" alt="image-20210410204408399"><br>Ia：环境光照强度</p>
+<h2 id="着色频率-shading-frequencies"><a href="#着色频率-shading-frequencies" class="headerlink" title="着色频率 shading frequencies"></a>着色频率 shading frequencies</h2><p><img src="https://i.loli.net/2021/06/02/yQBRClz4OZn19rE.png" alt="image-20210410204902475"></p>
+<h3 id="按面着色"><a href="#按面着色" class="headerlink" title="按面着色"></a>按面着色</h3><p>每个面各自计算多少光照</p>
+<h3 id="按顶点着色"><a href="#按顶点着色" class="headerlink" title="按顶点着色"></a>按顶点着色</h3><p><img src="https://i.loli.net/2021/06/02/6iF8MfYyBelzc3b.png" alt="image-20210410205018762"><br>根据周围几个面的平均方向来确定方向（或按照面积加权之后的平均方向）</p>
+<h3 id="按像素着色"><a href="#按像素着色" class="headerlink" title="按像素着色"></a>按像素着色</h3><p><img src="https://i.loli.net/2021/06/02/kG8yV4caJNBrbWP.png" alt="image-20210410205141824"></p>
+<h1 id="管线-pipeline"><a href="#管线-pipeline" class="headerlink" title="管线 pipeline"></a>管线 pipeline</h1><p><img src="https://i.loli.net/2021/06/02/jOK5muVTHX1n3Bx.png" alt="image-20210410205425070"></p>
+<h1 id="纹理映射-texture-mapping"><a href="#纹理映射-texture-mapping" class="headerlink" title="纹理映射 texture mapping"></a>纹理映射 texture mapping</h1><p>用来表现某个位置的图案，应该是什么颜色的</p>
+<p><img src="https://i.loli.net/2021/06/02/dSPKqpYJAHwXGt9.png" alt="image-20210410205604096"><br>有些的纹理是可以堆叠的（无限拼合看不出破绽）</p>
+<h2 id="重心坐标-Barycentric-Coordinates"><a href="#重心坐标-Barycentric-Coordinates" class="headerlink" title="重心坐标 Barycentric Coordinates"></a>重心坐标 Barycentric Coordinates</h2><p><img src="https://i.loli.net/2021/06/02/f4AwGkul6ELpQK9.png" alt="image-20210411195212169"><br>三角形内的任意一点的坐标，用A，B，C的坐标来表示。</p>
+<p><img src="https://i.loli.net/2021/06/02/UpBHojfcMw3YgPI.png" alt="image-20210411195310426"><br>这个条件使这个点在三角形的平面上。</p>
+<p>（1，0，0）时，表示点A的重心坐标。</p>
+<p><img src="https://i.loli.net/2021/06/02/tIFBiKnTfbXRd6G.png" alt="image-20210411201748505"><br>可以用VA，VB，VC代表某种属性，比如颜色的RGB值，代入这个式子，就能得到三角形中的每个点的颜色的平滑过渡。</p>
+<h2 id="纹理太小了"><a href="#纹理太小了" class="headerlink" title="纹理太小了"></a>纹理太小了</h2><p>使用双线性插值 bilinear interpolation</p>
+<p><img src="https://i.loli.net/2021/06/02/7XBJtYgkeURbL38.png" alt="image-20210411202608297"><br>综合考虑周围四个点的取值，线性地（按比例）求出中间这个点的颜色。</p>
+<p>同样的也有双立方差值，（综合考虑周围九个点的取值）</p>
+<h2 id="纹理太大了"><a href="#纹理太大了" class="headerlink" title="纹理太大了"></a>纹理太大了</h2><p>会导致锯齿和摩尔纹</p>
+<p><img src="https://i.loli.net/2021/06/02/C9mAnrgLFksy5Gh.png" alt="image-20210411202849778"><br>1、使用去锯齿那一套方法（超采样：一个像素中四个采样点；模糊采样：MSAA等）太慢了</p>
+<p>2、使用mipmap （快速，粗略，仅限正方形）</p>
+<p><img src="https://i.loli.net/2021/06/02/h3m6U9pPv2kEwa8.png" alt="image-20210411203110206"><br>在一开始就做好了各种像素情况下的平均（四个像素平均成一个像素了）</p>
+<p><img src="https://i.loli.net/2021/06/02/YmlHZLunGtiCy2x.png" alt="image-20210411203212683"><br>只需要求出D（光栅化之后，每个像素间的距离）找到对应的mipmap第几层。</p>
+<p><img src="https://i.loli.net/2021/06/02/jpRVnJxFhM6DWEc.png" alt="image-20210411203618776"><br>由于D的层数都是整数，所以取整数时D的颜色会突变，再使用一次线性插值，让颜色平滑过渡。</p>
+<p><img src="https://i.loli.net/2021/06/02/tZmvI9ORVQSePhM.png" alt="image-20210411203928137"><br>由于mipmap只适用与正方形，如果目标图像是一个离正方形相差大的图像，则会过于模糊（overblur）。可以使用各相异形滤波，实际上就是做mipmap的扩展，为其添加宽度（或长度）为原来一半时候的map。</p>
+<p><img src="https://i.loli.net/2021/06/02/t7GBdksh2fP3DE9.png" alt="image-20210411204239106"><br>相应的，也有更加细致的。（消耗更多代价）</p>
+<h2 id="环境光照"><a href="#环境光照" class="headerlink" title="环境光照"></a>环境光照</h2><p><img src="https://i.loli.net/2021/06/02/YECpAUmS1sDfvMa.png" alt="image-20210412133443576"><br>投射到球周围的六个面来表示（减少展开时候的形变）</p>
+<h2 id="用材质影响渲染"><a href="#用材质影响渲染" class="headerlink" title="用材质影响渲染"></a>用材质影响渲染</h2><p><img src="https://i.loli.net/2021/06/02/OTeaBucA4kD1Pno.png" alt="image-20210412133730179"></p>
+<h3 id="bump-map"><a href="#bump-map" class="headerlink" title="bump map"></a>bump map</h3><p>在材质上定义关于相对位置的高度，</p>
+<p><img src="https://i.loli.net/2021/06/02/cnaeoViLK3GlFzr.png" alt="image-20210412134758990"><br>其中u，v是材质图上的某一个方向，h（）就是计算那个位置的相对高度，计算出那个点的切线，就能算出法线，用于计算反射光照。</p>
+<h1 id="几何"><a href="#几何" class="headerlink" title="几何"></a>几何</h1><h2 id="如何在计算机中表现几何"><a href="#如何在计算机中表现几何" class="headerlink" title="如何在计算机中表现几何"></a>如何在计算机中表现几何</h2><h3 id="隐式几何-implicit"><a href="#隐式几何-implicit" class="headerlink" title="隐式几何 implicit"></a>隐式几何 implicit</h3><p>用函数关系表达式来表示一个几何图像</p>
+<p>优点：方便计算某个点与几何体的关系（内部，外部，面上）</p>
+<p>缺点：不直观，图形过于复杂时则很难表示</p>
+<p><img src="https://i.loli.net/2021/06/02/Gm1KxgaVqrnPtWY.png" alt="image-20210412141646450"><br>用集合的思想来表示稍微复杂的几何体</p>
+<p><img src="https://i.loli.net/2021/06/02/YHnJglSMxLWvTZC.png" alt="image-20210412142027688"><br>用signed distance function来计算渐变的中间情况</p>
+<h3 id="显式几何-explicit"><a href="#显式几何-explicit" class="headerlink" title="显式几何 explicit"></a>显式几何 explicit</h3><p><img src="https://i.loli.net/2021/06/02/qLvabD6JnokPGrB.png" alt="image-20210412141112605"><br>遍历左边图的u，v值，可以得到右图任何一个点的三维坐标</p>
+<p>优点：方便采样，容易表示</p>
+<p>缺点：很难确定某个点与几何体的相对关系</p>
+<p><img src="https://i.loli.net/2021/06/02/AVJmbsFLp8kEOaQ.png" alt="image-20210413160358756"><br>点云是一种显式几何的表示方法，一般扫描得到的集合体都是点云的形式</p>
+<p><img src="https://i.loli.net/2021/06/02/OIVeMcFuCB8H3R2.png" alt="image-20210413160629071"><br>多边形面（用三角形和四边形构成复杂的几何体）</p>
+<p><img src="https://i.loli.net/2021/06/02/cA8RStJrv4BUbEm.png" alt="image-20210413160724876"><br>.obj 文件就是多边形面来描述的，第一部分（v）是三角形的点坐标，第二部分（vt）是对应的纹理坐标，第三部分（vn）是对应的法线，第四部分（f）是定义的三角形的面 （f 5/1/1 1/2/1 4/3/1 构成一个三角形面，分别是由第五个点，第一个点，第四个点构成的面，用的纹理坐标是1，2，3，用的法线是1，1，1）</p>
+<h1 id="曲线-Curves"><a href="#曲线-Curves" class="headerlink" title="曲线 Curves"></a>曲线 Curves</h1><h2 id="贝塞尔曲线-Bezier-Curves"><a href="#贝塞尔曲线-Bezier-Curves" class="headerlink" title="贝塞尔曲线 Bézier Curves"></a>贝塞尔曲线 Bézier Curves</h2><p><img src="https://i.loli.net/2021/06/02/CUbFpjQHsvIueTw.png" alt="image-20210413161445570"><br>取b0，b1上（t，1-t）记为b01，取b1-&gt;b2的点（t，1-t）记为b12，取b01-&gt;b12的（t，1-t）点记为b02，这个点就是对于曲线上的（t，1-t）点</p>
+<p><img src="https://i.loli.net/2021/06/02/9QNhE17pgS6VYDy.png" alt="image-20210413171327744"><br>更一般时候的情况</p>
+<p>缺点：难以控制，牵一发而动全身</p>
+<p><img src="https://i.loli.net/2021/06/02/ZGDs8B6ghcJ7qF5.png" alt="image-20210413172639442"><br>样条：确定一些点，然后用自然光滑的曲线连接（树枝）</p>
+<p><img src="https://i.loli.net/2021/06/02/xGsEdeuD6Pqzlv7.png" alt="image-20210413172843407"><br>b样条（基函数样条），更高级的贝塞尔曲线，可以避免牵一发而动全身的问题，有局部性</p>
+<h1 id="曲面"><a href="#曲面" class="headerlink" title="曲面"></a>曲面</h1><p><img src="https://i.loli.net/2021/06/02/lVSW98cCxiyMhnL.png" alt="image-20210413173051165"><br>4*4的格子，先对每列上的四个点做贝塞尔曲线，得到四条贝塞尔曲线，分布在四列上，从行来看，每行都对应四条贝塞尔曲线上的各一个点（即每行对应四个点），把这些新的作为新贝塞尔曲线的控制点，得到每一行的贝塞尔曲线，像布一样，织成曲面。</p>
+<h2 id="网格操作"><a href="#网格操作" class="headerlink" title="网格操作"></a>网格操作</h2><p>可以是细分、简化、规格化（让每个三角形趋向于正三角形）</p>
+<h3 id="loop细分"><a href="#loop细分" class="headerlink" title="loop细分"></a>loop细分</h3><p><img src="https://i.loli.net/2021/06/02/zH3behyas7JlcSq.png" alt="image-20210414205400242"><br>先创建更多的三角形，</p>
+<p><img src="https://i.loli.net/2021/06/02/pGbnZBMms4qE75e.png" alt="image-20210414205418698"><br>再调整他们的位置（对于白点，每个较远点对他的影响是1/8，每个较远点对他的影响是3/8）</p>
+<p><img src="https://i.loli.net/2021/06/02/7xTJYAgZVCOzaSu.png" alt="image-20210414205543744"><br>调整老的点，依据周围几个点（根据该点的度（出度入度）决定）以及这个点原本的自己来决定</p>
+<h3 id="catmull-clark细分"><a href="#catmull-clark细分" class="headerlink" title="catmull-clark细分"></a>catmull-clark细分</h3><p><img src="https://i.loli.net/2021/06/02/rRGY29ZPX5HiAQS.png" alt="image-20210414205917459"><br>定义非四边形面和奇异点（度不为4）</p>
+<p>对于每一个面，取这个面的中心点和每条边的中点，连接起来。</p>
+<p><img src="https://i.loli.net/2021/06/02/4kuj2FQGAKMN5DU.png" alt="image-20210416191904701"><br>发现2个非四边形面变成了2个奇异点，重复操作，使它更加光滑</p>
+<p><img src="https://i.loli.net/2021/06/02/iEbJFtRMB38r1Ku.png" alt="image-20210416192126279"><br>更新位置的算法</p>
+<h3 id="曲面简化"><a href="#曲面简化" class="headerlink" title="曲面简化"></a>曲面简化</h3><p>边坍缩（要坍缩哪些边？）</p>
+<p><img src="https://i.loli.net/2021/06/02/efAaX5qIN4z2iQg.png" alt="image-20210416193343178"><br>最小化二次误差，计算新的顶点到原本的相邻的边的平方和。找到一个最小值。</p>
+<p>计算坍缩任何一条边可以得到的最小二次误差，这条边会被优先坍缩，当这条边坍缩完之后，更新周围与其相关联的点的新的最小二次误差值，方便进行下一次坍缩。</p>
+<h1 id="阴影"><a href="#阴影" class="headerlink" title="阴影"></a>阴影</h1><h2 id="Shadow-Mapping"><a href="#Shadow-Mapping" class="headerlink" title="Shadow Mapping"></a>Shadow Mapping</h2><p>核心点：一个位置是否没有阴影取决于这个点是否能被观察者和光源同时看到。</p>
+<p>观察者看到，光源没看到：有阴影</p>
+<p>观察者看到，光源也看到：没有阴影</p>
+<p>先计算光源位置看到的深度图，在计算观察者位置看到的深度图的时候，计算是否是同一位置。</p>
+<p>问题：</p>
+<ul>
+<li><p>只适用于硬阴影</p>
+</li>
+<li><p>质量取决于阴影贴图分辨率</p>
+</li>
+<li><p>设计计算深度的比较（如何才算相等？尺度问题）</p>
+<p><img src="https://i.loli.net/2021/06/02/yGhvT2wEkNfBbaj.png" alt="image-20210416194913146"><br>硬阴影和软阴影的区别（光源不是点光源或不是平行光）</p>
+</li>
+</ul>
+<h1 id="Ray-tracing-光线追踪"><a href="#Ray-tracing-光线追踪" class="headerlink" title="Ray tracing 光线追踪"></a>Ray tracing 光线追踪</h1><p>时间换质量</p>
+<p>3条假设：光直线传播；一束光不会被别的光影响；光从观察者出发，射向物体。</p>
+<h2 id="Whitted-Style"><a href="#Whitted-Style" class="headerlink" title="Whitted-Style"></a>Whitted-Style</h2><p>特点是递归的</p>
+<p>对于玻璃球，计算反射和折射，计算光在物体间弹射。</p>
+<p><img src="https://i.loli.net/2021/06/02/unDVz1hNw6lZvW3.png" alt="image-20210504202357399"><br>其中shadow rays计算是不是在阴影里</p>
+<h3 id="计算交点（光线和物体表面的交点）"><a href="#计算交点（光线和物体表面的交点）" class="headerlink" title="计算交点（光线和物体表面的交点）"></a>计算交点（光线和物体表面的交点）</h3><p><img src="https://i.loli.net/2021/06/02/KsOM47cLtplzZyb.png" alt="image-20210504202941477"><br>光线的表示</p>
+<p><img src="https://i.loli.net/2021/06/02/Dc9kxeCvLWhN62f.png" alt="image-20210505154837922"><br>光线和三角形的求交，联立解析式</p>
+<p><img src="https://i.loli.net/2021/06/02/AqCT6BKkL8REFoz.png" alt="image-20210505160427933"><br>对于求交点，那就是求正的实数根。</p>
+<p><img src="https://i.loli.net/2021/06/02/NoMikOv7x6wpShG.png" alt="image-20210505161523835"><br>用平米上的一个点和平面的法线来规定一个平面上的所有点。</p>
+<h4 id="MT算法"><a href="#MT算法" class="headerlink" title="MT算法"></a>MT算法</h4><p><img src="https://i.loli.net/2021/06/02/o3YsVCpyAORvP5T.png" alt="image-20210505164235833"><br>把三角形用重心坐标表示，三个未知量t、b1、b2。</p>
+<h3 id="Bounding-Volumes-包围盒"><a href="#Bounding-Volumes-包围盒" class="headerlink" title="Bounding Volumes 包围盒"></a>Bounding Volumes 包围盒</h3><p>光线追踪需要与场景内任何一个三角形求交，太慢了，采用包围盒的思想加快速度。</p>
+<p>轴对齐包围盒 Axis-Aligned Bounding Box （AABB）</p>
+<p>1、分别计算到每个轴的对面的t</p>
+<p>2、进入的t取最大的，出去的t取最小的</p>
+<p>3、如果x出去的t&gt;x进来的t，说明这束光线确实通过了这个包围盒</p>
+<p><img src="https://i.loli.net/2021/06/02/KNH2oMgRALi49cS.png" alt="image-20210505192144330"><br>比较常规的求交点和aabb</p>
+<h3 id="加速求交"><a href="#加速求交" class="headerlink" title="加速求交"></a>加速求交</h3><p><img src="https://i.loli.net/2021/06/02/m6P89yZTurQegxw.png" alt="image-20210505192936080"><br>对场景进行预处理，分割成许多格子（默认格子求交简单，而具体物体求交复杂），只需要计算光线与每个格子的求交情况，如果有物体在某个格子内，与格子有交点时再与该物体求交。（更好的思路：由于是光线，只需要判断已经有交点的格子的附近格子是否继续有交点，节省计算量）（格子的划分数量太多没意义，太少起不到作用。一个实践得出的平衡是格子数是物体的27倍：3 * 3 * 3 ）</p>
+<p><img src="https://i.loli.net/2021/06/02/eEd6LCNktT19ayZ.png" alt="image-20210505194611082"><br>其他的思路：八叉树、KD-Tree（每次交替地按某一轴二分）、BSP-Tree（非轴线二分）</p>
+<h3 id="KD-tree"><a href="#KD-tree" class="headerlink" title="KD-tree"></a>KD-tree</h3><p><img src="https://i.loli.net/2021/06/02/nHfUjktXWBxF4Ra.png" alt="image-20210505195139422"><br>仅仅在叶子结点储存具体的物体，会形成一颗二叉树，到一个节点后继续向下判断是否在该节点的子节点里，最后定位到具体的物体。</p>
+<h3 id="BVH-Bounding-Volume-Hierarchy"><a href="#BVH-Bounding-Volume-Hierarchy" class="headerlink" title="BVH Bounding Volume Hierarchy"></a>BVH Bounding Volume Hierarchy</h3><p><img src="https://i.loli.net/2021/06/02/YFhv8WzeDJm75al.png" alt="image-20210505210651574"><br>与KD-tree不同的一点在于：KD-tree划分包围盒，再考虑包围盒与物体的关系；而BVH划分物体，再重新计算这些物体形成的新的包围盒（一个物体只在一个包围盒里）</p>
+<p><img src="https://i.loli.net/2021/06/02/f4F7bVPvl6zXieR.png" alt="image-20210505211159688"><br>建立BVH的思路：1、沿最长的轴-&gt;均匀分块</p>
+<p>2、沿中间的物体-&gt;比较平衡的树</p>
+<h2 id="辐射度量学"><a href="#辐射度量学" class="headerlink" title="辐射度量学"></a>辐射度量学</h2><p>原来的问题，物理量没有严格的单位和定义，需要用更精确的物理</p>
+<h3 id="Radiant-flux"><a href="#Radiant-flux" class="headerlink" title="Radiant flux"></a>Radiant flux</h3><p><img src="https://i.loli.net/2021/06/02/nhq8j6pKAMDx2Gc.png" alt="image-20210505212221639"><br>单位时间辐射能量，单位是W，瓦特，算一种功率，在光里，用lm（流明）来表示（光有多少亮）</p>
+<h3 id="intensity"><a href="#intensity" class="headerlink" title="intensity"></a>intensity</h3><p><img src="https://i.loli.net/2021/06/02/OnTys1k8rGNaKcF.png" alt="image-20210505212750001"><br>也叫radiance intensity，光源的光照强度单位立体角，单位cd坎德拉</p>
+<p><img src="https://i.loli.net/2021/06/02/zHqRLKgcSGMJjXB.png" alt="image-20210505213052633"><br>用平面角来类比立体角</p>
+<p><img src="https://i.loli.net/2021/06/02/oZB9SEI8sRklHDn.png" alt="image-20210505213510173"><br><img src="https://i.loli.net/2021/06/02/j57DOxt3GH81Rl9.png" alt="image-20210505213535717"><br>积出表面积。</p>
+<p>所有方向上的intensity加起来就是Radiant flux，所以单位立体角的intensity就是点光源的power除以4pi</p>
+<h3 id="irradiance"><a href="#irradiance" class="headerlink" title="irradiance"></a>irradiance</h3><p><img src="https://i.loli.net/2021/06/02/EmH2Gr5vZxedU4u.png" alt="image-20210505212521586"><br>物体表面某点（单位面积）受到的光强，照度，单位勒克斯Lx</p>
+<p><img src="https://i.loli.net/2021/06/02/2GNswKfYd9CyxUZ.png" alt="image-20210506134326963"><br>接受到的光强与光线和物体表面形成的夹角有关。</p>
+<p><img src="https://i.loli.net/2021/06/02/ZFDXdvQAWJ4sfla.png" alt="image-20210506134432141"><br>与之前的不同处，光照强度是会衰减的。（Irradiance在衰减、Intensity不会变）</p>
+<h3 id="radiance"><a href="#radiance" class="headerlink" title="radiance"></a>radiance</h3><p>光单位时间、单位立体角、单位投影面积上的能量。</p>
+<p><img src="https://i.loli.net/2021/06/02/XKtickSjIbTFgfZ.png" alt="image-20210518110352987"><br><img src="https://i.loli.net/2021/06/02/PnE1eY69SZ4TVQs.png" alt="image-20210518110654818"><br>和Irradiance的、Intensity的区别，（用积分来转换）</p>
+<h2 id="BRDF-（Bidirectional-Reflectance-Distribution-Function）"><a href="#BRDF-（Bidirectional-Reflectance-Distribution-Function）" class="headerlink" title="BRDF （Bidirectional Reflectance Distribution Function）"></a>BRDF （Bidirectional Reflectance Distribution Function）</h2><p>用一个函数计算光如何反射。</p>
+<p><img src="https://i.loli.net/2021/06/02/lkqVcjefENDSIOy.png" alt="image-20210518111706523"><br>关于光线追踪的问题：一个点射出来的光需要用射到这个点的光计算-&gt;导致递归问题-&gt;需要解一个平衡方程</p>
+<p><img src="https://i.loli.net/2021/06/02/1gbCekxcT5jasSm.png" alt="image-20210518111949927"><br><img src="https://i.loli.net/2021/06/02/ywNmbYRnMs5deBt.png" alt="image-20210518112444084"><br><img src="https://i.loli.net/2021/06/02/LZ3VDygT7JmlrUc.png" alt="image-20210518112506259"><br><img src="https://i.loli.net/2021/06/02/6EsjMRGlKF8w3iS.png" alt="image-20210518112531360"><br><img src="https://i.loli.net/2021/06/02/RH1wQnk6avYbOUG.png" alt="image-20210518112556879"><br><img src="https://i.loli.net/2021/06/02/I5ZtLJBObyp3AYz.png" alt="image-20210518112614273"><br>（ppt里写的真是简单明了）</p>
+<h3 id="蒙特卡罗积分"><a href="#蒙特卡罗积分" class="headerlink" title="蒙特卡罗积分"></a>蒙特卡罗积分</h3><p>在一段连续函数内取几个点，用离散的方式计算积分。</p>
+<p><img src="https://i.loli.net/2021/06/02/I3oAvNsZybVaEew.png" alt="image-20210518113256632"></p>
+<h1 id="路径追踪"><a href="#路径追踪" class="headerlink" title="路径追踪"></a>路径追踪</h1><p><img src="https://i.loli.net/2021/06/02/z48JLQi1NHVSXwO.png" alt="image-20210518114346976"><br>就是解这个方程</p>
+<p><img src="https://i.loli.net/2021/06/02/cmFufOxZVJCy4ph.png" alt="image-20210518114457837"><br>用蒙特卡罗积分来简化这个方程</p>
+<p><img src="https://i.loli.net/2021/06/02/snzp4XqKhdTLeWl.png" alt="image-20210518114639952"><br>得到这样的算法：渲染，对于N个角度，对于每束光线，计算光线的强度，打到物体时，计算累积下来的光。</p>
+<p>问题：1、N的指数级迭代，会指数爆炸。2、永远停不下来</p>
+<p>解决：1、N改成1，但是会导致噪声过大，可以一个像素射出多根光线平均亮度。（从指数级变为乘级）。</p>
+<p><img src="https://i.loli.net/2021/06/02/ftUdrweEnZB8gix.png" alt="image-20210518115121344"><br>2、用Russian Roulette (俄罗斯轮盘赌、简称RR)来用概率的方式决定要不要继续，使E概率期望维持相同。</p>
+<p><img src="https://i.loli.net/2021/06/02/qXAlxyRSEB2cFDj.png" alt="image-20210518115923803"><br>问题：效率很低，因为当光源比较小的时候，很多条光线都没用上。</p>
+<p>解决：把光源的光束独立地来算</p>
+<p><img src="https://i.loli.net/2021/06/02/DLjrJYwysUR6Ztc.png" alt="image-20210518120105108"><br>光源发出的光，就不需要用RR了</p>
+<p><img src="https://i.loli.net/2021/06/02/sUHxgBQ6IJXpFDy.png" alt="image-20210518120239356"><br>新的渲染方程。</p>
+<p><img src="https://i.loli.net/2021/06/02/A4jCVnPTZyb5MNB.png" alt="image-20210518120307076"><br>除此之外，还需要计算是否有物体和光源之间的遮挡。然后路径追踪就写好了。</p>
+<p><img src="https://i.loli.net/2021/06/02/CJOxiQm5Yb7WMqH.png" alt="image-20210518120635876"></p>
+<h1 id="Material-BRDF"><a href="#Material-BRDF" class="headerlink" title="Material == BRDF"></a>Material == BRDF</h1><p>如何表现一种材质，不同的brdf表现出不同的材质。</p>
+<p>课上介绍了一些比较杂的反射、折射等，这里简单介绍几种材质</p>
+<h3 id="Microfacet-Material"><a href="#Microfacet-Material" class="headerlink" title="Microfacet Material"></a>Microfacet Material</h3><p>漫反射形成的原因：宏观上某个表面粗糙，像各个方向发射光线。</p>
+<p>微观上：许多起伏的镜面反射。每个起伏考虑各自独立的法线。</p>
+<p>使用microfacet材质可以很好地做出glossy（类似铜镜、像比较模糊的镜面材质）的材质</p>
+<p><img src="https://i.loli.net/2021/06/02/HmRiyUWSdGp4l9A.png" alt="image-20210524162712184"><br>F是菲涅尔项（光的角度与光的强度的关系），G是由于起伏会相互遮挡而产生的几何项、D表示法线分布</p>
+<h2 id="Isotropic-Anisotropic-Materials"><a href="#Isotropic-Anisotropic-Materials" class="headerlink" title="Isotropic / Anisotropic Materials"></a>Isotropic / Anisotropic Materials</h2><p>各项同性、各项异性材质</p>
+<p>一般的材质都是各项同性的，但一些地方（如一些金属制品）有由于工艺而产生的纹路。</p>
+<p><img src="https://i.loli.net/2021/06/02/mOQjYaLJyBlVNFZ.png" alt="image-20210524163309407"><br>以及尼龙、织物等细节结构并不是理想中的完美一大块，</p>
+<h3 id="BRDF的特性"><a href="#BRDF的特性" class="headerlink" title="BRDF的特性"></a>BRDF的特性</h3><p>非负性，线性可加性，可逆性（光路可逆，brdf的值相等），能量守恒性</p>
+<p><img src="https://i.loli.net/2021/06/02/NRDCPS9K74ioaFm.png" alt="image-20210529111951279"><br>对于各项同性的材质来说，原本的brdf是四维的，可以看作三维的，只需要考虑方位角之差</p>
+<h2 id="测量BRDF"><a href="#测量BRDF" class="headerlink" title="测量BRDF"></a>测量BRDF</h2><p>1、不断用不同方向的光源照射某个物体，不断用各个方向的相机记录下物体的反射的光。</p>
+<p>缺点：测量量极大，需要四维的测量。</p>
+<p>可以利用brdf的特性减少测量量：认为是各项同性，四维-&gt;三维；光路可逆，减少一半的测量；猜出一部分……</p>
+<p><strong>推荐</strong> brdf库：MERL BRDF Database </p>
+<h1 id="前沿渲染技术"><a href="#前沿渲染技术" class="headerlink" title="前沿渲染技术"></a>前沿渲染技术</h1><p>Biased Unbiased 有偏的估计和无偏的估计：无偏的估计指 计算得越多，就越符合真实的情况。无偏的则是 越精确的时候，也不一定和真实的更加相符。但当真的样本真的足够多的时候，还是会收敛到真实的情况，称为 consistent 一致性。</p>
+<h2 id="Bidirectional-Path-Tracing-BDPT"><a href="#Bidirectional-Path-Tracing-BDPT" class="headerlink" title="Bidirectional Path Tracing (BDPT)"></a>Bidirectional Path Tracing (BDPT)</h2><p>双向路径追踪</p>
+<p><img src="https://i.loli.net/2021/06/02/eHApBckEZt7a4bD.png" alt="image-20210529114253136"><br>虚线是手动连起来的部分，实现起来很困难，</p>
+<p><img src="https://i.loli.net/2021/06/02/GvpIO6qjrX2zRLT.png" alt="image-20210529132704912"><br>适合光源那一头光线比较密集的情况</p>
+<h2 id="Metropolis-Light-Transport-MLT"><a href="#Metropolis-Light-Transport-MLT" class="headerlink" title="Metropolis Light Transport (MLT)"></a>Metropolis Light Transport (MLT)</h2><p>用马尔可夫链做相似（已经得到一个点的信息，可以很容易得到周边差距不大点的信息）</p>
+<p><img src="https://i.loli.net/2021/06/02/QvgPdrkS16YA8tC.png" alt="image-20210529132950363"><br>适用于场景复杂，很难做路径追踪的时候。</p>
+<p>缺点：所有操作都是局部的，导致各个点收敛程度不同，做动画的话，容易有抖动，画面看起来“很脏”。</p>
+<h2 id="Photon-Mapping"><a href="#Photon-Mapping" class="headerlink" title="Photon Mapping"></a>Photon Mapping</h2><p>光子映射（有偏的方案）</p>
+<p><img src="https://i.loli.net/2021/06/02/YTckGSEgH4Ft3Ws.png" alt="image-20210529133639380"><br>方法是，用光子的概念量化计算光打到某个diffuse的表面（不是diffuse的话就该反射反射，该折射折射）。当这个表面被视角发出的射线看到的时候，则计算周围的光子个数来计算这个位置应该的亮度。</p>
+<p><img src="https://i.loli.net/2021/06/02/wyHt8pEbaVTcO5G.png" alt="image-20210529133840196"><br>由于是量化了光子，所以一定是有偏的，等到一个点的光子多到超过了周围N个光子的要求，就有一致性。</p>
+<p>N太小，噪声大，N太大，会模糊。</p>
+<h2 id="Vertex-Connection-and-Merging（VCM）"><a href="#Vertex-Connection-and-Merging（VCM）" class="headerlink" title="Vertex Connection and Merging（VCM）"></a>Vertex Connection and Merging（VCM）</h2><p>双向路径追踪和光子映射的结合</p>
+<p><img src="https://i.loli.net/2021/06/02/wS9LHQdRfBAVIat.png" alt="image-20210529134500532"><br>双向路径追踪射出来的点和光子计算距离</p>
+<p>制作电影里有许多应用</p>
+<h2 id="Instant-Radiosity-IR"><a href="#Instant-Radiosity-IR" class="headerlink" title="Instant Radiosity (IR)"></a>Instant Radiosity (IR)</h2><p>实时辐射度算法：把受到光照的点当作新的光源，当作VPL（Virtual Point Light），可以用直接光照来算弹射一次的光照了</p>
+<p>优点：很小的计算量，在diffuse面上不错的效果</p>
+<p>缺点：边界处会出现问题，无法处理glossy（铜镜）材质</p>
+<h1 id="前沿的模型"><a href="#前沿的模型" class="headerlink" title="前沿的模型"></a>前沿的模型</h1><p><img src="https://i.loli.net/2021/06/02/jB3fPnKvgDhNwcp.png" alt="image-20210529203626336"></p>
+<h2 id="非平面模型"><a href="#非平面模型" class="headerlink" title="非平面模型"></a>非平面模型</h2><p>比如雾</p>
+<p><img src="https://i.loli.net/2021/06/02/SzZyM7XITbaHQCF.png" alt="image-20210529204906662"><br>散射</p>
+<p><img src="https://i.loli.net/2021/06/02/IgyphfBnkD72WF8.png" alt="image-20210529205219214"><br>不同的散射模型</p>
+<h2 id="渲染头发"><a href="#渲染头发" class="headerlink" title="渲染头发"></a>渲染头发</h2><h3 id="Kajiya-Kay-Model"><a href="#Kajiya-Kay-Model" class="headerlink" title="Kajiya-Kay Model"></a>Kajiya-Kay Model</h3><p><img src="https://i.loli.net/2021/06/02/WAtasNkh1dJfT92.png" alt="image-20210529212234285"><br>有一定的向各个方向的散射</p>
+<h3 id="Marschner-Model"><a href="#Marschner-Model" class="headerlink" title="Marschner Model"></a>Marschner Model</h3><p>更精细的</p>
+<p><img src="https://i.loli.net/2021/06/02/ZY6W89z3fQulwtM.png" alt="image-20210529212337721"><br><img src="https://i.loli.net/2021/06/02/wP8rSpJtXNm4qnG.png" alt="image-20210529212359187"><br>从生物学上学习人的头发和动物的毛发的区别：动物的毛的髓质更粗（光线打到髓质反射，打到外面的角质层则散射，所以对渲染有影响）</p>
+<h2 id="Granular-Material-粒状材料"><a href="#Granular-Material-粒状材料" class="headerlink" title="Granular Material 粒状材料"></a>Granular Material 粒状材料</h2><p>将一个物体用沙子类的粒状来表示</p>
+<h2 id="Surface-models"><a href="#Surface-models" class="headerlink" title="Surface models"></a>Surface models</h2><p>半透明的玉石</p>
+<p><img src="https://i.loli.net/2021/06/02/KNyuP6S1h2ftnFz.png" alt="image-20210529213556522"><br>Subsurface Scattering 次表面散射（被用于渲染人体、玉石雕塑）</p>
+<p>从一个点进入，从另一个点出去，在内部的表面中发生了散射</p>
+<h2 id="布料-cloth"><a href="#布料-cloth" class="headerlink" title="布料 cloth"></a>布料 cloth</h2><p><img src="https://i.loli.net/2021/06/02/XVrfMpBOdZ8mbLs.png" alt="image-20210529213839903"><br>fiber -&gt; ply -&gt; yarn</p>
+<p>为了更真实，需要去把布料当成纤维组成的物体而不是简单的平面</p>
+<h2 id="现实的物体往往没想象中的美好"><a href="#现实的物体往往没想象中的美好" class="headerlink" title="现实的物体往往没想象中的美好"></a>现实的物体往往没想象中的美好</h2><p><img src="https://i.loli.net/2021/06/02/ocNpKJL6v1QDtwf.png" alt="image-20210529214129130"><br>NDF：法线分布方程</p>
+<p><img src="https://i.loli.net/2021/06/02/shTBvHetbVqCOid.png" alt="image-20210529214234267"><br><img src="https://i.loli.net/2021/06/02/e3NcWsvdHqGtFk1.png" alt="image-20210529214319347"><br>NDF的运用：如图路径采样很困难，</p>
+<p><img src="https://i.loli.net/2021/06/02/bsPaxcFN3vJt7eA.png" alt="image-20210529214401360"><br>用一个像素照到的区域，来计算微表面的NDF，用于微表面模型里</p>
+<h2 id="结合波动光学的细节材料"><a href="#结合波动光学的细节材料" class="headerlink" title="结合波动光学的细节材料"></a>结合波动光学的细节材料</h2><p><img src="https://i.loli.net/2021/06/02/WwZ7SzgauNpVFeX.png" alt="image-20210529220252336"><br><img src="https://i.loli.net/2021/06/02/WlseaV3KNHZAOgb.png" alt="image-20210529220346910"><br>仔细看就会有因为波长而产生的颜色</p>
+<h2 id="Procedural-Appearance"><a href="#Procedural-Appearance" class="headerlink" title="Procedural Appearance"></a>Procedural Appearance</h2><p><img src="https://i.loli.net/2021/06/02/WXamjp3xHDBVdGz.png" alt="image-20210529220545203"><br>用噪声方程来渲染木头纹理、陶瓷纹理，三维的纹理，适用于需要空间中任何一点的纹理（正常情况的纹理贴图做不到）。随取随用，再经过自定义的后期操作，就能产生适合某种物体的纹理细节。</p>
+<h1 id="捕捉"><a href="#捕捉" class="headerlink" title="捕捉"></a>捕捉</h1><p><img src="https://i.loli.net/2021/06/02/UjHsrBTSt1NludM.png" alt="image-20210529221255357"><br>拍照时，怎样收集光，1、小孔成像 2、用透镜来聚焦光线</p>
+<p><img src="https://i.loli.net/2021/06/02/e5A3urMnVgypJYz.png" alt="image-20210529221404262"><br>不聚焦光线的后果…</p>
+<h2 id="Field-of-View-FOV-视场"><a href="#Field-of-View-FOV-视场" class="headerlink" title="Field of View (FOV) 视场"></a>Field of View (FOV) 视场</h2><p><img src="https://i.loli.net/2021/06/02/FzGJYDgRqiWK1tP.png" alt="image-20210529221518077"><br>指代能看到的角度范围，（由于感光元件的大小或者是感光元件与透镜间的位置关系不同，FOV也会发生变化）</p>
+<h2 id="Exposure-曝光"><a href="#Exposure-曝光" class="headerlink" title="Exposure 曝光"></a>Exposure 曝光</h2><p>如何在感光元件上留下信息？光强 * 时间</p>
+<p><img src="https://i.loli.net/2021/06/02/r2AY5bgoa8kEKB1.png" alt="image-20210529221828972"><br>光圈大小、快门速度（曝光时间）、感光度都是影响摄影的曝光的部分。</p>
+<p><img src="https://i.loli.net/2021/06/02/s3BeoMG9pLz2rFE.png" alt="image-20210529222001508"><br>对比图。iso感光度提高会放大噪声对图片的影响</p>
+<p><img src="https://i.loli.net/2021/06/02/hdV6PxQD9I421YR.png" alt="image-20210529222032133"><br>一般情况下，成平方比例。F-Stop 光圈大小，数字越大，光圈越小； Shutter曝光时间</p>
+<h2 id="透镜"><a href="#透镜" class="headerlink" title="透镜"></a>透镜</h2><p><img src="https://i.loli.net/2021/06/02/IAh5vHlkYWQPxwm.png" alt="image-20210529222413832"><br>透镜方程</p>
+<h2 id="Defocus-Blur-由于没有对焦而产生的模糊"><a href="#Defocus-Blur-由于没有对焦而产生的模糊" class="headerlink" title="Defocus Blur 由于没有对焦而产生的模糊"></a>Defocus Blur 由于没有对焦而产生的模糊</h2><p><img src="https://i.loli.net/2021/06/02/4GD8XA5VNYF6wxz.png" alt="image-20210529222928293"><br>即模糊（或COC）与光圈大小成正比，光圈的f数就是焦距除以光圈的直径</p>
+<h2 id="Ray-Tracing-Ideal-Thin-Lenses"><a href="#Ray-Tracing-Ideal-Thin-Lenses" class="headerlink" title="Ray Tracing Ideal Thin Lenses"></a>Ray Tracing Ideal Thin Lenses</h2><p><img src="https://i.loli.net/2021/06/02/r9cnAHSQoeK25uY.png" alt="image-20210529223930091"><br>用模拟薄透镜结合光线追踪来作出对焦的效果</p>
+<h2 id="Depth-of-Field-景深"><a href="#Depth-of-Field-景深" class="headerlink" title="Depth of Field 景深"></a>Depth of Field 景深</h2><p> <img src="https://i.loli.net/2021/06/02/VR6t2vBJQj7oGEP.png" alt="image-20210529224102799"><br>成像屏幕的附近一段深度（Depth of focus）认为其的COC足够小，对应的景深（Depth of field）可以认为是清晰的，于是，其他的部分就是模糊的。</p>
+<h1 id="颜色"><a href="#颜色" class="headerlink" title="颜色"></a>颜色</h1><h2 id="Light-Field-Lumigraph-光场"><a href="#Light-Field-Lumigraph-光场" class="headerlink" title="Light Field / Lumigraph 光场"></a>Light Field / Lumigraph 光场</h2><h3 id="The-Plenoptic-Function全光函数"><a href="#The-Plenoptic-Function全光函数" class="headerlink" title="The Plenoptic Function全光函数"></a>The Plenoptic Function全光函数</h3><p><img src="https://i.loli.net/2021/06/02/HdCqrBlhNmb25tQ.png" alt="image-20210530132334830"><br>sita和fai 用极坐标表示任何一个方向，lamda决定波长（颜色），t是看的时间（不同的时间看到的东西不一样），Vx，Vy，Vz是观察者的位置（观察者可以在任何一个地方看）<img src="https://i.loli.net/2021/06/02/3TkJFqPypgI7Ztf.png" alt="image-20210530132957585"><br>三维空间中的光线，发射点和方向</p>
+<p><img src="https://i.loli.net/2021/06/02/PHp1gMCd8WZzNLO.png" alt="image-20210530133058544"><br>（假如方向已知）两个点确定一条直线，来表示一条光线</p>
+<p>光场某个物体的某个点，向任意一个方向的发光情况（光的强度）。光场是全光函数的一部分，用二维的位置和二维的方向来表示。</p>
+<p><img src="https://i.loli.net/2021/06/02/nIO24Kb193mUCak.png" alt="image-20210530133628922"><br>两个平面上各选一个点，就可以确定所有空间内能看见的光线。</p>
+<h3 id="光场摄像机"><a href="#光场摄像机" class="headerlink" title="光场摄像机"></a>光场摄像机</h3><p>记录下一整个光场，可以做后期处理</p>
+<p><img src="https://i.loli.net/2021/06/02/CAzypUrYPNHtuT3.png" alt="image-20210530135809638"><br>光场照相机的思路就是相当于一个像素一个相机</p>
+<h2 id="色彩的物理基础"><a href="#色彩的物理基础" class="headerlink" title="色彩的物理基础"></a>色彩的物理基础</h2><p><img src="https://i.loli.net/2021/06/02/KCpDjY5VXRFE6fL.png" alt="image-20210530140250880"><br>可见光谱</p>
+<h3 id="Spectral-Power-Distribution-SPD-谱功率密度"><a href="#Spectral-Power-Distribution-SPD-谱功率密度" class="headerlink" title="Spectral Power Distribution (SPD) 谱功率密度"></a>Spectral Power Distribution (SPD) 谱功率密度</h3><p><img src="https://i.loli.net/2021/06/02/jSFwKLArRZbYqHW.png" alt="image-20210530140409343"><br>不同的颜色说明谱功率密度不同</p>
+<p>谱功率密度具有线性可加性</p>
+<h2 id="色彩的生物学基础"><a href="#色彩的生物学基础" class="headerlink" title="色彩的生物学基础"></a>色彩的生物学基础</h2><p>颜色是人感知到的</p>
+<p><img src="https://i.loli.net/2021/06/02/4DgElNqVTxIaiHJ.png" alt="image-20210530141038186"><br>人的视网膜上的感光细胞，Rods负责感受光强、Cones（有三种S，M，L）负责感受光的颜色</p>
+<h2 id="Tristimulus-Theory-of-Color"><a href="#Tristimulus-Theory-of-Color" class="headerlink" title="Tristimulus Theory of Color"></a>Tristimulus Theory of Color</h2><p><img src="https://i.loli.net/2021/06/02/GILzqDSFE17WQd2.png" alt="image-20210530141605295"><br>视网膜看到三种颜色的值，再进入大脑来合成</p>
+<h2 id="Metamerism-同色异谱"><a href="#Metamerism-同色异谱" class="headerlink" title="Metamerism 同色异谱"></a>Metamerism 同色异谱</h2><p><img src="https://i.loli.net/2021/06/02/OsmetXJZQaYq49C.png" alt="image-20210530142359925"><br>不同的光谱密度分布可能出现相同的颜色，应用于难以发出类似自然光的显示器上。</p>
+<h2 id="Additive-Color-加色系统"><a href="#Additive-Color-加色系统" class="headerlink" title="Additive Color 加色系统"></a>Additive Color 加色系统</h2><p><img src="https://i.loli.net/2021/06/02/sdbGjuLhJkC91lK.png" alt="image-20210530142633230"><br>更改RGB三个色来产生颜色</p>
+<p><img src="https://i.loli.net/2021/06/02/mP8qnawYUSkv7od.png" alt="image-20210530142705378"><br>某些时候，RGB的值可以是负的</p>
+<h2 id="颜色空间"><a href="#颜色空间" class="headerlink" title="颜色空间"></a>颜色空间</h2><p>除了RGB之外，也有别的方式表示颜色</p>
+<h3 id="CIE-XYZ"><a href="#CIE-XYZ" class="headerlink" title="CIE XYZ"></a>CIE XYZ</h3><p><img src="https://i.loli.net/2021/06/02/CtqiZmEnx5rgHWY.png" alt="image-20210530142934927"><br>XYZ的值与光谱的关系</p>
+<p><img src="https://i.loli.net/2021/06/02/3oc6COweLRAU9MD.png" alt="image-20210530142956138"><br>由于x+y+z=1，可以用2个值来表示，画在坐标轴上表示色域（称为色度图）</p>
+<p><img src="https://i.loli.net/2021/06/02/ZG2EleRvVDUCoPk.png" alt="image-20210530143156072"><br>各种颜色表示方式的色域比较</p>
+<h3 id="HSV-Color-Space-Hue-Saturation-Value"><a href="#HSV-Color-Space-Hue-Saturation-Value" class="headerlink" title="HSV Color Space (Hue-Saturation-Value)"></a>HSV Color Space (Hue-Saturation-Value)</h3><p><img src="https://i.loli.net/2021/06/02/POKNqByRe6lGXcf.png" alt="image-20210530143255875"><br>把颜色放在一个圆柱里，hue表示色调，saturation表示饱和度，value表示光强度。常用于取色器</p>
+<h3 id="CIELAB-Space-AKA-L-a-b"><a href="#CIELAB-Space-AKA-L-a-b" class="headerlink" title="CIELAB Space (AKA L*a*b*)"></a>CIELAB Space (AKA <code>L*a*b*</code>)</h3><p><img src="https://i.loli.net/2021/06/02/kdyjpFzUP2oX1cI.png" alt="image-20210530143542016"><br>用三个相对的（互补色）颜色维度来表示颜色</p>
+<p>人眼有互补色效应</p>
+<h3 id="CMYK-A-Subtractive-Color-Space-减色系统"><a href="#CMYK-A-Subtractive-Color-Space-减色系统" class="headerlink" title="CMYK: A Subtractive Color Space 减色系统"></a>CMYK: A Subtractive Color Space 减色系统</h3><p><img src="https://i.loli.net/2021/06/02/UQ3VoCcGpr8B9ZW.png" alt="image-20210530143750816"><br>常用于打印机（K黑色是为了节省墨水才加入的）</p>
+<h1 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h1><h2 id="Keyframe-Animation"><a href="#Keyframe-Animation" class="headerlink" title="Keyframe Animation"></a>Keyframe Animation</h2><p>关键帧动画</p>
+<p><img src="https://i.loli.net/2021/06/02/Kj8GSJybk7Mf4xI.png" alt="image-20210530151330141"><br>用关键帧来控制物体动画的走向，再添加上补间部分</p>
+<h2 id="Physical-Simulation"><a href="#Physical-Simulation" class="headerlink" title="Physical Simulation"></a>Physical Simulation</h2><p>物理模拟</p>
+<h3 id="质点弹簧系统"><a href="#质点弹簧系统" class="headerlink" title="质点弹簧系统"></a>质点弹簧系统</h3><p><img src="https://i.loli.net/2021/06/02/UIbkehg751lVKXp.png" alt="image-20210530151726756"><br><img src="https://i.loli.net/2021/06/02/eqHlcdfv7M5UB9Y.png" alt="image-20210530151837470"><br>摩擦力会让能量损失</p>
+<p>问题：这种摩擦力只能表示外力，而不能表示物体的内力（一段匀速运动的弹簧，也会因为这里的摩擦而减慢）</p>
+<p><img src="https://i.loli.net/2021/06/02/zDmq2oTPCyF8GKp.png" alt="image-20210530152219453"><br>根据弹簧长度来计算的摩擦力（总是趋向于让弹簧恢复原长的方向）</p>
+<h3 id="弹簧的结构"><a href="#弹簧的结构" class="headerlink" title="弹簧的结构"></a>弹簧的结构</h3><p><img src="https://i.loli.net/2021/06/02/VMeNc5XPFQDa39O.png" alt="image-20210530152335428"><br>质点弹簧系统如何应用于物体。</p>
+<p><img src="https://i.loli.net/2021/06/02/14YufxGvD3EVths.png" alt="image-20210530152436165"><br>考虑一块布的质点弹簧系统：需要抵抗各个方向的剪切力、抵抗向平面外的弯曲。蓝线力较强、红线力较弱</p>
+<h3 id="Particle-Systems-粒子系统"><a href="#Particle-Systems-粒子系统" class="headerlink" title="Particle Systems 粒子系统"></a>Particle Systems 粒子系统</h3><p>优点：易于理解、具有可伸缩性（容易控制个数多少、速度快慢）</p>
+<p>缺点：需要许多颗粒、需要加速结构</p>
+<p><img src="https://i.loli.net/2021/06/02/HVOiCPFqfKtbwE8.png" alt="image-20210530152929955"><br>粒子系统的渲染方法</p>
+<h2 id="正向运动学"><a href="#正向运动学" class="headerlink" title="正向运动学"></a>正向运动学</h2><p>如何做出动画</p>
+<p><img src="https://i.loli.net/2021/06/02/CpgWir4FZ5AExDw.png" alt="image-20210530153217929"><br>定义好一个骨骼系统</p>
+<p><img src="https://i.loli.net/2021/06/02/JVhfrFEdOYeNg1A.png" alt="image-20210530153248654"><br>可以计算出最后的点可以到的位置</p>
+<p>效果：定义好骨骼和各个角度，最后可以知道尖端停在哪</p>
+<h2 id="逆向运动学"><a href="#逆向运动学" class="headerlink" title="逆向运动学"></a>逆向运动学</h2><p>艺术家们想只要结果，无所谓过程。</p>
+<p><img src="https://i.loli.net/2021/06/02/KMNzD8Hn4aXf2jd.png" alt="image-20210530153513428"><br>同样的例子，反向算出角度很困难。而且可能有不唯一的解。（相关话题：机器学习，梯度下降法）</p>
+<h2 id="Rigging"><a href="#Rigging" class="headerlink" title="Rigging"></a>Rigging</h2><p>rigging：操作提线木偶</p>
+<p>通过绑定控制点的方法来操作3d模型</p>
+<h3 id="Blend-Shapes"><a href="#Blend-Shapes" class="headerlink" title="Blend Shapes"></a>Blend Shapes</h3><p>应用了类似骨骼系统，只需要控制出关键帧，就自然能生成自然的过渡动画</p>
+<h2 id="Motion-Capture-动作捕捉"><a href="#Motion-Capture-动作捕捉" class="headerlink" title="Motion Capture 动作捕捉"></a>Motion Capture 动作捕捉</h2><p>在演员身上绑定好各种球，再使用特殊的相机来捕捉动作</p>
+<p>优点：短时间内制作大量动作，更加真实</p>
+<p>缺点：复杂且昂贵的设备，无法满足艺术需要</p>
+<h2 id="动画的生产管线"><a href="#动画的生产管线" class="headerlink" title="动画的生产管线"></a>动画的生产管线</h2><p><img src="https://i.loli.net/2021/06/02/BQKDmA1r9R4evtI.png" alt="image-20210530154602682"></p>
+<h2 id="单粒子模拟"><a href="#单粒子模拟" class="headerlink" title="单粒子模拟"></a>单粒子模拟</h2><p>来计算某个例子在一个速度场的运动轨迹（任何一个时刻的位置）</p>
+<p><img src="https://i.loli.net/2021/06/02/aji6nU4GTYN8bIc.png" alt="image-20210530155318814"><br>（一阶的）常微分方程</p>
+<h3 id="Eular’s-method"><a href="#Eular’s-method" class="headerlink" title="Eular’s method"></a>Eular’s method</h3><p><img src="https://i.loli.net/2021/06/02/g8bieNM4Ejl2RCZ.png" alt="image-20210530155443718"><br>delta_t太大时，极大地偏离正确的轨迹</p>
+<p>具有不稳定性（在一个趋向于某点或某方向的速度场中无法趋向于那个点或方向）</p>
+<h3 id="Midpoint-Method-中点法"><a href="#Midpoint-Method-中点法" class="headerlink" title="Midpoint Method 中点法"></a>Midpoint Method 中点法</h3><p><img src="https://i.loli.net/2021/06/02/2fNlHXVYuxkv8gK.png" alt="image-20210530155819828"><br>用原本欧拉方法算出来的终点的中点去计算欧拉方法</p>
+<h3 id="Modified-Eular"><a href="#Modified-Eular" class="headerlink" title="Modified Eular"></a>Modified Eular</h3><p><img src="https://i.loli.net/2021/06/02/3njptL7vmq85KFg.png" alt="image-20210530155911028"><br>综合了步长的出发点和终点</p>
+<h3 id="Adaptive-step-size-动态步长法"><a href="#Adaptive-step-size-动态步长法" class="headerlink" title="Adaptive step size 动态步长法"></a>Adaptive step size 动态步长法</h3><p><img src="https://i.loli.net/2021/06/02/1Mm8olgnNWDeIjL.png" alt="image-20210530160034061"></p>
+<h3 id="Implicit-Euler-Method-隐式欧拉法"><a href="#Implicit-Euler-Method-隐式欧拉法" class="headerlink" title="Implicit Euler Method 隐式欧拉法"></a>Implicit Euler Method 隐式欧拉法</h3><p><img src="https://i.loli.net/2021/06/02/1ZUTR5hEnGOtlg2.png" alt="image-20210530160615155"><br>用下一个时刻的速度来计算下一个时刻的位置，需要解一个不好解的方程。稳定性：非常稳定</p>
+<h3 id="稳定性的计算"><a href="#稳定性的计算" class="headerlink" title="稳定性的计算"></a>稳定性的计算</h3><p><img src="https://i.loli.net/2021/06/02/fh65NXtUBzDOL89.png" alt="image-20210530160805474"></p>
+<h3 id="Runge-Kutta-Families"><a href="#Runge-Kutta-Families" class="headerlink" title="Runge-Kutta Families"></a>Runge-Kutta Families</h3><p>一类方程，很适合解这种常微分方程</p>
+<p><img src="https://i.loli.net/2021/06/02/R4nYbm2spIBNiUh.png" alt="image-20210530160948762"><br>举例子：其中最常用的RK4方法</p>
+<h2 id="Position-Based-Verlet-Integration-非物理的方法"><a href="#Position-Based-Verlet-Integration-非物理的方法" class="headerlink" title="Position-Based / Verlet Integration 非物理的方法"></a>Position-Based / Verlet Integration 非物理的方法</h2><p>用位置间的相互关系来模拟物体的运动</p>
+<h3 id="Rigid-body-simulate-刚体的模拟"><a href="#Rigid-body-simulate-刚体的模拟" class="headerlink" title="Rigid body simulate 刚体的模拟"></a>Rigid body simulate 刚体的模拟</h3><p><img src="https://i.loli.net/2021/06/02/FfDvw3Z6qjTUe1m.png" alt="image-20210530161617095"></p>
+<h3 id="Fluid-Simulation-流体的模拟"><a href="#Fluid-Simulation-流体的模拟" class="headerlink" title="Fluid Simulation 流体的模拟"></a>Fluid Simulation 流体的模拟</h3><p>当成水是不可压缩的刚体，小球分布的位置总是趋向于密度相同（与平静的水相比）</p>
+<h3 id="拉格朗日方法-vs-欧拉方法"><a href="#拉格朗日方法-vs-欧拉方法" class="headerlink" title="拉格朗日方法 vs 欧拉方法"></a>拉格朗日方法 vs 欧拉方法</h3><p>拉格朗日方法：画面的变化是因为质点随着时间变化</p>
+<p>欧拉方法：画面的变化是画面中某个空间随着时间变化</p>
+<p>将两者结合起来的方法叫做物质点方法 Material Point Method (MPM)</p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://d1gg12.github.io/2021/05/31/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/" rel="tag">图形学</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+    
+      <a href="/2020/12/16/%E5%88%B7%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E5%92%8C%E9%85%8D%E7%BD%91%E7%BA%AA%E5%AE%9E/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">刷路由器固件和配网纪实</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "",
+    app_key: "",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2020-2021
+        <i class="ri-heart-fill heart_icon"></i> d1gg12
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        由 <a href="https://hexo.io" target="_blank">Hexo</a> 强力驱动
+        <span class="division">|</span>
+        主题 - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="https://gitee.com/d1gg12/blogimage/raw/master/blog's%20icon.png" alt="moon"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tools">工具</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+ 
+<script src="/js/dz.js"></script>
+ 
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=1409311773&auto=0&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
+</body>
+
+</html>

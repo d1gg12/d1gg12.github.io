@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+  <meta charset="UTF-8">
+  <title>Showdown Live Editor</title>
+
+  <link href='http://fonts.googleapis.com/css?family=Old+Standard+TT:400,400italic,700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,600' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/css/foundation.min.css">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="msapplication-TileColor" content="#2b5797">
+  <meta name="theme-color" content="#ffffff">
+  
+  <!-- conditional load of showdown's version based on the cookie -->
+  <script>
+    (function() {
+      function getCookie(name) {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length === 2) return parts.pop().split(";").shift();
+      }
+
+      var ver = getCookie('version') || 'develop',
+          url = 'https://rawgit.com/showdownjs/showdown/' + ver + '/dist/showdown.min.js',
+          scrp = document.createElement('script');
+
+      scrp.setAttribute("type","text/javascript");
+      scrp.src = url;
+      document.getElementsByTagName("head")[0].appendChild(scrp);
+    })();
+  </script>
+
+</head>
+<body data-ng-controller="editorCtrl">
+
+  <nav class="top-bar" data-topbar role="navigation" data-ng-include="'partials/nav.html'"></nav>
+
+  <div id="editor-wrapper" class="container">
+    <textarea id="editor" data-ng-model="text"></textarea>
+    <div id="preview" sd-model-to-html="text"></div>
+  </div>
+  <div class="lateral-menu" pageslide ps-open="checked" ps-side="left" ps-body-class="squeezed-body">
+    <div class="lateral-menu-content">
+      <div class="title">Options</div>
+      <div class="lateral-menu-content-inner">
+
+        <div ng-repeat="opt in checkOpts">
+          <input id="checkOpt-{{$id}}" ng-click="updateOptions(); repaint();" type="checkbox" ng-model="opt.value" />
+          <label for="checkOpt-{{$id}}" class="inline">{{opt.name}}</label>
+        </div>
+        <hr>
+        <div ng-repeat="opt in numOpts">
+          <label for="option-{opt.name}">{{opt.name}}</label>
+          <input id="option-{opt.name}" ng-change="updateOptions(); repaint();" type="number" ng-model="opt.value"/>
+        </div>
+        <div ng-repeat="opt in textOpts">
+          <label for="option-{opt.name}">{{opt.name}}</label>
+          <input id="textOption-{opt.name}" data-ng-change="updateOptions(); repaint();" type="text" ng-model="opt.value"/>
+        </div>
+        <div>
+          <label for="showdownVersion">Showdown Version</label>
+          <select id="showdownVersion" ng-model="version" ng-options="v for v in versions" ng-change="loadVersion()"></select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal -->
+  <div data-ng-hide="!showModal" class="modal-wrapper ng-hide">
+    <div class="modal-inner" aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+      <div class="modal-topbar">
+        <span><i>&nbsp;&nbsp;Limited to 1000 characters</i></span><a class="modal-close-btn" aria-label="Close" data-ng-click="showModal = false"><i class="fa fa-lg fa-close"></i></a>
+      </div>
+      <div class="link-area">
+        <textarea id="dlnk" style="resize: none;">{{hashTxt}}</textarea>
+      </div>
+    </div>
+  </div>
+  <!-- end modal -->
+
+  <script src="js/semver.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular-sanitize.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular-animate.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular-route.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular-cookies.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-pageslide-directive/2.2.0/angular-pageslide-directive.js" integrity="sha256-FW2YsacWIn83+j6c02CWOR8fuY4WyzbmmGwz7VOdEI0=" crossorigin="anonymous"></script>
+
+  <script src="js/editor.js"></script>
+</body>
+</html>
