@@ -76,7 +76,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.1k</span>
+            <span class="post-count">1.5k</span>
         </span>
     </span>
 
@@ -85,7 +85,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3 分钟</span>
+            <span class="post-count">5 分钟</span>
         </span>
     </span>
 </div>
@@ -106,9 +106,12 @@
 <h2 id="准备刷"><a href="#准备刷" class="headerlink" title="准备刷"></a>准备刷</h2><p>了解到WOL（wake on lan）远程唤醒之后，我发现我与我目标的真远程就差一个高级的路由器，听说小米/红米的ac2100路由器不错，趁着双十二买一波，小米和红米的配置一样，但是小米的贵50左右（因为很酷炫的造型），所以我还是买了红米的。<br>路由器的固件有很多种，小米系自带的又是那种很单纯不过很好使的（根本需要不了这么高的配置），网上主流的路由器固件就是pandorabox、openwrt……<br>听说openwrt扩展性更好一点，可以当个开发板了，就决定刷openwrt。<br>网上的资源看起来很多，实际上不太好找……<br>我这里有一份包含了教程和固件的优质作业：<a target="_blank" rel="noopener" href="https://cyhour.com/1337/">https://cyhour.com/1337/</a><br>（恩山论坛里其实有很多路由器相关的这种资源和教程，不过需要注册，比较麻烦。）</p>
 <h2 id="开始刷"><a href="#开始刷" class="headerlink" title="开始刷"></a>开始刷</h2><p>刚开始是刷breed，人称不死鸟（刷不坏），可以用web管理页面方便地重刷固件，而且刷坏了，进不去新固件，用实体按键就能回到不死鸟的重刷界面。<br>第一遍刷的时候我以为一步到位就行，反正都有现成的作业，为啥还要刷breed。然而我第一次尝试就失败了（刷错固件进不去了）。还好有小米官方的回刷软件得以救砖（不过还是耗费了很长时间）<br>刷固件的思路大致基本上是wan口直接连lan口，让路由器以为自己连上网了（实际上连着自己），然后自己一个cve的payload打回自己，启动telnet，然后就可以刷了。</p>
 <h2 id="刷完固件"><a href="#刷完固件" class="headerlink" title="刷完固件"></a>刷完固件</h2><p>几经辗转，刷了一些没什么功能的/功能太多导致内存不够很难运行的/固件版本过时的，终于找到一个不错的固件 <a target="_blank" rel="noopener" href="http://disk.0xo.net/file/12816724-444111339">http://disk.0xo.net/file/12816724-444111339</a> （就是上文教程里的其中一个）<br>然后要解决的就是如何接上电信的闪讯：<br>参考了这个视频 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1bA411q73m?from=search&amp;seid=12002526257598936523">https://www.bilibili.com/video/BV1bA411q73m?from=search&amp;seid=12002526257598936523</a><br>但至是转接，还得输入动态密码才行（貌似已经有想办法不获取密码的方法了）</p>
-<h2 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h2><p>然后一波配置，把远程桌面的端口映射到路由器上，然后路由器用我公网服务器上的nps穿透到外网，ssh连到openwrt的shell，可以直接用linux_mipsel架构的客户端。<br>顺便把路由器web管理界面（一般是80端口）也穿到外网上，这样就可以远程WOL了。<br>但是后来发现远程WOL之后被唤醒的windows主机连不上网，被分配了一个169.254.xx.xx的ip地址，导致上不了网。百度了一波是windows刚开机还没被DHCP服务器分配ip地址的时候自己默认的，但是这样导致了我DHCP服务器给他分配不了ip……（所以每次都需要禁用之后再启用就好了）。不过后来发现是网卡驱动的锅……<br>更新：谁都有锅，最终解决方法是把开机密码取消。</p>
+<h2 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h2><p>然后一波配置，把远程桌面的端口映射到路由器上，然后路由器用我公网服务器上的nps <a target="_blank" rel="noopener" href="https://github.com/ehang-io/nps">https://github.com/ehang-io/nps</a> 穿透到外网，ssh连到openwrt的shell，可以直接用linux_mipsel架构的客户端。<br>顺便把路由器web管理界面（一般是80端口）也穿到外网上，这样就可以远程WOL了。<br>但是后来发现远程WOL之后被唤醒的windows主机连不上网，被分配了一个169.254.xx.xx的ip地址，导致上不了网。百度了一波是windows刚开机还没被DHCP服务器分配ip地址的时候自己默认的，但是这样导致了我DHCP服务器给他分配不了ip……（所以每次都需要禁用之后再启用就好了）。不过后来发现是网卡驱动的锅……<br>更新：谁都有锅，最终解决方法是把开机密码取消。</p>
 <h2 id="moonlight"><a href="#moonlight" class="headerlink" title="moonlight"></a>moonlight</h2><p>一开始想方设法把moonlight的端口穿透出来，后来在moonlight的官方文档里 <a target="_blank" rel="noopener" href="https://github.com/moonlight-stream/moonlight-docs/wiki">https://github.com/moonlight-stream/moonlight-docs/wiki</a> 找到了从广域网连接的方法，只需要下载一个客户端脚本运行下就行，他会自动帮你分配一个ip地址。不过貌似不太固定，所以需要用teamviewer等软件再登上去看看。</p>
 <h2 id="曲线救国"><a href="#曲线救国" class="headerlink" title="曲线救国"></a>曲线救国</h2><p>之前貌似一直找不到如何固定闪讯密码或者直接绕过密码的方法，不过最近找到个 <a target="_blank" rel="noopener" href="https://github.com/kuretru/SingleNet-Robot">https://github.com/kuretru/SingleNet-Robot</a> 能自动获取密码然后结合刷的openwrt改上密码。</p>
+<h2 id="再后续"><a href="#再后续" class="headerlink" title="再后续"></a>再后续</h2><p>最近寝室经常断网和停电，每次路由器一被迫重启之后，总是不会启动npc连接我服务器的nps了，每次都需要物理手动重新启动一次，非常麻烦，尤其是出去打比赛却不能远程的时候，就会非常痛苦。<br>openwrt中可以配置启动项，但是因为启动npc需要先连接网络，一般启动时还没连上网络，npc就自己报错退出了。遂研究了一下如何优雅地写shell脚本<br>自启动项，都存放在 <code>/etc/init.d/</code> 目录下，也可以参考它是怎么写的</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh /etc/rc.common</span></span><br><span class="line">START=99</span><br><span class="line"></span><br><span class="line">start() &#123;</span><br><span class="line">ping -c 3 -w 5 www.baidu.com</span><br><span class="line"></span><br><span class="line">if [[ $? == 0 ]];then</span><br><span class="line">        /root/npc -server=ip2.thesoldierjack.cn:8024 -vkey=9rwtphbvixz2s5y1 -type=tcp</span><br><span class="line">else</span><br><span class="line">        sleep 2</span><br><span class="line">        /etc/init.d/npcstart start</span><br><span class="line">fi</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中START的值表示这个脚本在启动时排什么位置，可以重复，不过貌似最多只能两位数<br><code>start()</code> 就是这个启动项的启动函数，路由器启动时就会调用它<br>大致的意思很简单，就是尝试 <code>ping www.baidu.com</code> 检查是否有网络，如果有，就执行npc，如果还没网就等几秒再重新执行这个脚本<br>编写完脚本，需要 chmod 给一下权限，然后 <code>/etc/init.d/脚本 enable</code> 一下，相当于正式注册了。<br>系统开始时相当于会调用 <code>/etc/init.d/脚本 start</code> 类似的还有stop、boot等操作，这里没有用到。</p>
  
       <!-- reward -->
       
