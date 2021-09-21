@@ -76,7 +76,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">319</span>
+            <span class="post-count">394</span>
         </span>
     </span>
 
@@ -105,6 +105,15 @@
 
 <p>仔细观察之后发现我的网站主要是一些图片加载的比较慢，文字啥的基本上都是一下子能加载好，而背景图或是封面图一开始都灰灰的，过一会才能加载出来。<br>之后才知道小的博客网站会把图片放在一些大的图床上，这样就减轻了自己服务器加载这些图片的带宽压力。<br>比如这个<br><a target="_blank" rel="noopener" href="http://sbimg.cn/">http://sbimg.cn</a><br>现在在逐渐把一些图搬到图床上。</p>
 <h2 id="搬家"><a href="#搬家" class="headerlink" title="搬家"></a>搬家</h2><p>最近想折腾下自己的博客，搬到github.io上<br>用的是hexo，主题是ayer<br><img src="https://wx2.sbimg.cn/2020/09/08/9ARb6.jpg" alt="img"><br>主要参考了这篇文章<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/liuxianan/p/build-blog-website-by-hexo-github.html">https://www.cnblogs.com/liuxianan/p/build-blog-website-by-hexo-github.html</a><br>另外，有时会遇到npm命令不存在或是node命令不存在，先检查一下用户变量和系统变量里的路径，还有就是可能是core-js版本太低，用<br><code>npm install --save core-js@3</code> 升级一下。</p>
+<h2 id="添加pdf"><a href="#添加pdf" class="headerlink" title="添加pdf"></a>添加pdf</h2><p>首先，加入hexo-pdf插件<br><code>npm install --save hexo-pdf</code><br>我把网站根目录下的<code>_config.yml</code> 中 <code>post_asset_folder</code> 改为了true，这样在创建新post文章时，会自动生成一个同名文件夹，可以用来放要展示的pdf。</p>
+<p>然后在文章里使用 
+
+	<div class="row">
+    <embed src="./文件名.pdf" width="100%" height="550" type="application/pdf">
+	</div>
+
+
+ 来插入pdf</p>
  
       <!-- reward -->
       
