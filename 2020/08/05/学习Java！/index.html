@@ -139,7 +139,7 @@
 <h2 id="2020-8-10"><a href="#2020-8-10" class="headerlink" title="2020-8-10"></a>2020-8-10</h2><h3 id="Java-操作符的实质"><a href="#Java-操作符的实质" class="headerlink" title="Java+-操作符的实质"></a><strong>Java+-操作符的实质</strong></h3><p><a target="_blank" rel="noopener" href="https://github.com/giantray/stackoverflow-java-top-qa/blob/master/contents/java-operator.md">https://github.com/giantray/stackoverflow-java-top-qa/blob/master/contents/java-operator.md</a></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">i += j;</span><br><span class="line"><span class="comment">//与下面的语句等价</span></span><br><span class="line">i = (type of i)(i + j);</span><br></pre></td></tr></table></figure>
 <h2 id="2020-8-11"><a href="#2020-8-11" class="headerlink" title="2020-8-11"></a>2020-8-11</h2><h3 id="主动赋null"><a href="#主动赋null" class="headerlink" title="主动赋null"></a><strong>主动赋null</strong></h3><blockquote>
-<p>一个没有被引用的对象（原来的引用变量指向别的对象）不再有用，现在他就成为垃圾（garbage），Java会检测垃圾并回收它所占的空间。</p>
+<p>一个没有被引用的对象（原来的引用变量指向别的对象）不再有用，现在他就成为垃圾（garbage），Java会检测垃圾并回收它所占的空间。(有点像c++ 的 shared_ptr)</p>
 </blockquote>
 <p>如果不再需要某个对象时，可以显式地给该对象的引用变量赋null值，这个对象就会被自动回收。可以用这一点优化内存占用，不过更好的解决方案应该是尽量使用匿名对象（anonymous object）。</p>
  
