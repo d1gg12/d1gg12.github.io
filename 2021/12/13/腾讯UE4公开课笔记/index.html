@@ -355,11 +355,11 @@
 <p>状态机：提供了图形化的方式来控制动画的切换（状态之间可以设置转换条件以及转换的融合相关数据）</p>
 <p>IK (Inverse Kinematics) 逆向运动学<br>Two Bone IK 限制3个骨骼，一般用于人物的四肢<br>FABRIK （Forward and Backward Reaching Inverse Kinematics）正向及反向的IK</p>
 <h3 id="资源获取"><a href="#资源获取" class="headerlink" title="资源获取"></a>资源获取</h3><p>这里讲了一些Epic商城有付费或者免费的动画，但往往都并不是同一套骨骼，没法用，就只能主动用骨骼的重定向管理器，把对应骨骼绑定好再重定向动画。</p>
-<h2 id="渲染基础"><a href="#渲染基础" class="headerlink" title="渲染基础"></a>渲染基础</h2><p>理论部分我就不做记录了，粗粗带过了点图形学的渲染部分。</p>
+<h2 id="第七节课-渲染基础"><a href="#第七节课-渲染基础" class="headerlink" title="第七节课 渲染基础"></a>第七节课 渲染基础</h2><p>理论部分我就不做记录了，粗粗带过了点图形学的渲染部分。</p>
 <h3 id="UE4的材质系统"><a href="#UE4的材质系统" class="headerlink" title="UE4的材质系统"></a>UE4的材质系统</h3><p>光源类型<br>定向光源，天空光照，点光源，聚光源</p>
 <p>在材质编辑器中，通过可视化脚本编程，来创建HLSL代码<br>材质域、混合模式、着色模型（次表面、透明图层）</p>
 <p>粒子系统</p>
-<h2 id="网络同步"><a href="#网络同步" class="headerlink" title="网络同步"></a>网络同步</h2><p>网络角色和授权</p>
+<h2 id="第八节课-网络同步"><a href="#第八节课-网络同步" class="headerlink" title="第八节课 网络同步"></a>第八节课 网络同步</h2><p>网络角色和授权</p>
 <p>###Authority（授权）<br>拥有Actor的最终解释权</p>
 <p>Autonomous Proxy（自主代理）<br>能够自主的指向一些逻辑，接受授权的Actor的矫正（玩家Pawn）</p>
 <p>Simulated Proxy（模拟代理）<br>由授权的Actor完全控制（AI、其他玩家、场景中的可交互物品）</p>
@@ -372,7 +372,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// actor.h</span><br><span class="line">void SetXXX();</span><br><span class="line"></span><br><span class="line">UFUNCTION(reliable, server, ...) // reliable, unreliable</span><br><span class="line">                                 // Server, Client, NetMulticast</span><br><span class="line">void ServerSetXXX();</span><br></pre></td></tr></table></figure>
 
 <p>移动同步</p>
-<h2 id="游戏AI"><a href="#游戏AI" class="headerlink" title="游戏AI"></a>游戏AI</h2><h3 id="自动寻路"><a href="#自动寻路" class="headerlink" title="自动寻路"></a>自动寻路</h3><p>A*算法，结合了Dijkstra和贪心<br>基于评估函数寻找最优路径，效率高，较准确。</p>
+<h2 id="第九节课-游戏AI"><a href="#第九节课-游戏AI" class="headerlink" title="第九节课 游戏AI"></a>第九节课 游戏AI</h2><h3 id="自动寻路"><a href="#自动寻路" class="headerlink" title="自动寻路"></a>自动寻路</h3><p>A*算法，结合了Dijkstra和贪心<br>基于评估函数寻找最优路径，效率高，较准确。</p>
 <p>UE4使用Navigation Mesh计算地形，（体素化，生成区域，生成轮廓，生成多边形网格，生成高度细节）<br>用Recast寻路</p>
 <h3 id="行为树"><a href="#行为树" class="headerlink" title="行为树"></a>行为树</h3><p>行为树是由行为节点组成的树状结构，每个节点的执行会产生结果，传递给父节点，决定下一步的动作。<br>UE4中的行为树节点分为</p>
 <ul>
