@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta name="description" content="d1gg12&#39;s blog" />
+      
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>腾讯UE4公开课笔记 |  moon</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="https://gitee.com/d1gg12/blogimage/raw/master/blog's%20icon.png" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
+
+      <!-- mermaid -->
+      
+    </head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-腾讯UE4公开课笔记"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  腾讯UE4公开课笔记
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/12/13/%E8%85%BE%E8%AE%AFUE4%E5%85%AC%E5%BC%80%E8%AF%BE%E7%AC%94%E8%AE%B0/" class="article-date">
+  <time datetime="2021-12-13T08:16:31.000Z" itemprop="datePublished">2021-12-13</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">3k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">11 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="想法"><a href="#想法" class="headerlink" title="想法"></a>想法</h2><p>了解了解工业界的角度的UE4，腾讯的客户端公开课，可以学习学习</p>
+<span id="more"></span>
+
+<h2 id="第一节课"><a href="#第一节课" class="headerlink" title="第一节课"></a>第一节课</h2><p>简单介绍了下这课是干啥的，腾讯一共4个工作室，每个工作室开一个班，我被分到的班是北极光开的，有将近80人。</p>
+<p>总共10节课，最后一节课大作业考核，想拿实习offer得保证出勤率、大作业考核质量以及一个面试</p>
+<p>据HR的意思，这课的ppt是保密的材料，手机截不了图，电脑客户端也是水印满满，但是说了可以记笔记。</p>
+<p>第一节课技术方面主要是讲了讲UE4的蓝图，展示了一下基本的组件操作之类的，蓝图我之前用过，所以没有仔细听。</p>
+<p>讲师的ppt做的比较简单，讲的具体内容也感觉没有刻意准备，但是对一个同学提出的问题能快速清晰的在项目中演示解决，感觉不是专门的讲师，像干活的大佬里拎一个出来的。</p>
+<p>课后没有作业，这点我比较失望，本来想借机会体验一下工业级开发是怎样的。</p>
+<h2 id="第二节课-游戏模式"><a href="#第二节课-游戏模式" class="headerlink" title="第二节课 游戏模式"></a>第二节课 游戏模式</h2><p>gamemode gamestate player pawn</p>
+<p>loadmap时 先初始化gamemode 再初始化gamestate</p>
+<p>中间一些细节忘记记录了，有点可惜，主要是从C++的层面讲述 UE4 如何运行，如何继承关系之类的。</p>
+<p>我读过的一本罗丁力的《大象无形:虚幻引擎程序设计浅析》中也讲到了一些，可以参考一下。</p>
+<p>可运行文件 + 说明文档</p>
+<h2 id="第三节课-UE4代码规范-amp-3d-Math"><a href="#第三节课-UE4代码规范-amp-3d-Math" class="headerlink" title="第三节课 UE4代码规范 &amp; 3d Math"></a>第三节课 UE4代码规范 &amp; 3d Math</h2><p>代码规范：1、降低复杂度 2、提升可维护性 3、提升可读性</p>
+<h3 id="UE4-C-代码规范"><a href="#UE4-C-代码规范" class="headerlink" title="UE4 C++代码规范"></a>UE4 C++代码规范</h3><h4 id="命名"><a href="#命名" class="headerlink" title="命名"></a>命名</h4><ul>
+<li><p>清晰、明确、避免过度缩写</p>
+</li>
+<li><p>变量名：大驼峰式（CamelCase），bool类型须加b前缀<br>如: TotalLeaves = SmallLeaves + LargeLeaves - SmallAndLargeLeaves;</p>
+</li>
+<li><p>类型名：前缀 + 大驼峰式</p>
+<table>
+<thead>
+<tr>
+<th align="center">开头字母</th>
+<th align="center">表示含义</th>
+<th align="center">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">T</td>
+<td align="center">模板类</td>
+<td align="center">TMap</td>
+</tr>
+<tr>
+<td align="center">U</td>
+<td align="center">继承自UObject</td>
+<td align="center">UMoviePlayerSettings</td>
+</tr>
+<tr>
+<td align="center">A</td>
+<td align="center">继承自AActor</td>
+<td align="center">APlayerCameraManager</td>
+</tr>
+<tr>
+<td align="center">S</td>
+<td align="center">继承自SWidget</td>
+<td align="center">SCompoundWidget</td>
+</tr>
+<tr>
+<td align="center">I</td>
+<td align="center">抽象接口类</td>
+<td align="center">INavNodeInterface</td>
+</tr>
+<tr>
+<td align="center">E</td>
+<td align="center">枚举</td>
+<td align="center">EAccountType</td>
+</tr>
+<tr>
+<td align="center">b</td>
+<td align="center">布尔变量</td>
+<td align="center">bHasFadedIn</td>
+</tr>
+<tr>
+<td align="center">F</td>
+<td align="center">其他类</td>
+<td align="center">FVector</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>引用传入可能修改的函数变量：加Out前缀</p>
+</li>
+</ul>
+<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><ul>
+<li><p>基础类型</p>
+<table>
+<thead>
+<tr>
+<th align="center">数据类型</th>
+<th align="center">意义</th>
+<th align="center">大小（字节）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">bool</td>
+<td align="center">布尔值</td>
+<td align="center">sizeof(bool)</td>
+</tr>
+<tr>
+<td align="center">TCHAR</td>
+<td align="center">字符</td>
+<td align="center">sizeof(TCHAR)</td>
+</tr>
+<tr>
+<td align="center">int8/uint8</td>
+<td align="center">有符号/无符号字节</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">int16/uint16</td>
+<td align="center">…短整数</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">int32/uint32</td>
+<td align="center">…整数</td>
+<td align="center">4</td>
+</tr>
+<tr>
+<td align="center">int64/uint64</td>
+<td align="center">…整数</td>
+<td align="center">8</td>
+</tr>
+<tr>
+<td align="center">float</td>
+<td align="center">单精度浮点数</td>
+<td align="center">4</td>
+</tr>
+<tr>
+<td align="center">double</td>
+<td align="center">双精度浮点数</td>
+<td align="center">8</td>
+</tr>
+<tr>
+<td align="center">PTRINT</td>
+<td align="center">与指针同样大小的整数</td>
+<td align="center">sizeof(PTRINT)</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>字符串类：使用UE定义的FString/FText/FName/TCHAR等</p>
+</li>
+<li><p>容器类：应避免使用stl，使用UE定义的TArray/TMap等</p>
+</li>
+</ul>
+<h4 id="代码风格"><a href="#代码风格" class="headerlink" title="代码风格"></a>代码风格</h4><ul>
+<li><p>大括号换行</p>
+</li>
+<li><p>if-else对齐</p>
+</li>
+<li><p>使用Tab缩进</p>
+</li>
+<li><p>switch-case语句中，必须要有default，如果fall-through，必须明确注释</p>
+</li>
+</ul>
+<h4 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h4><ul>
+<li><p>UnrealHeaderTool仅支持全局命名空间的类型</p>
+</li>
+<li><p>不要在全局命名空间中使用using声明</p>
+</li>
+<li><p>一些宏在命名空间内可能会失效，可以尝试UE_前缀的版本</p>
+</li>
+</ul>
+<h4 id="C-11"><a href="#C-11" class="headerlink" title="C++11"></a>C++11</h4><ul>
+<li><p>不要使用NULL宏，使用nullptr来表示空指针</p>
+</li>
+<li><p>Lambda函数须明确指出返回类型</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> AddFunc = [](<span class="keyword">int</span> A, <span class="keyword">int</span> B) -&gt; <span class="keyword">int</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">return</span> A + B;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li><p>不要使用 auto，除了 lambda函数、迭代器声明、模板中类型推导</p>
+</li>
+</ul>
+<h4 id="etc"><a href="#etc" class="headerlink" title="etc"></a>etc</h4><p>详见：<a target="_blank" rel="noopener" href="https://docs.unrealengine.com/4.26/en-US/ProductionPipelines/DevelopmentSetup/CodingStandard/">https://docs.unrealengine.com/4.26/en-US/ProductionPipelines/DevelopmentSetup/CodingStandard/</a></p>
+<p>后面还讲了一些3d math之类的东西，图形学里也有，懒得记录了</p>
+<p>推荐了本书《游戏引擎架构》，图书馆正好有，最近在看</p>
+<h2 id="第四节课-虚幻四UI系统（UMG）"><a href="#第四节课-虚幻四UI系统（UMG）" class="headerlink" title="第四节课 虚幻四UI系统（UMG）"></a>第四节课 虚幻四UI系统（UMG）</h2><p>简要介绍了下 界面</p>
+<h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><h4 id="可见性-Visibility"><a href="#可见性-Visibility" class="headerlink" title="可见性 Visibility"></a>可见性 Visibility</h4><ul>
+<li>Visible 显示可见并可以接受点击</li>
+<li>Collapsed 不显示且折叠起来，不接受点击</li>
+<li>Hidden 不显示，占据位置，不接受点击</li>
+<li>Not Hit-Testable(Self &amp; All Children) 显示，自己和子控件不接受点击事件</li>
+<li>Not Hit-Testable(Self Only) 显示，只自己不接受点击事件</li>
+</ul>
+<h3 id="控件Widget"><a href="#控件Widget" class="headerlink" title="控件Widget"></a>控件Widget</h3><h4 id="插槽Slot"><a href="#插槽Slot" class="headerlink" title="插槽Slot"></a>插槽Slot</h4><p>子控件与父控件的相对位置</p>
+<p>介绍了些xx属性是干嘛的</p>
+<p>锚点：Anchors </p>
+<h4 id="常用控件"><a href="#常用控件" class="headerlink" title="常用控件"></a>常用控件</h4><ul>
+<li>Button</li>
+<li>CheckBox</li>
+<li>Image</li>
+<li>ProgressBar</li>
+<li>Text &lt;-&gt; RichText</li>
+<li>EditableText (Multi-Line)</li>
+</ul>
+<p>容器（Panel）</p>
+<ul>
+<li>CanvasPanel</li>
+<li>HorizontalBox</li>
+<li>VerticalBox</li>
+<li>Overlay</li>
+<li>WidgetSwitch</li>
+</ul>
+<p>复杂控件</p>
+<ul>
+<li>UniformGridPanel</li>
+<li>GridPanel</li>
+<li>ScrollBox</li>
+<li>ListView</li>
+<li>InvalidationBox</li>
+</ul>
+<h4 id="控件的更新方式"><a href="#控件的更新方式" class="headerlink" title="控件的更新方式"></a>控件的更新方式</h4><p>1.功能/函数绑定<br>绑定一个函数更新UI，逐帧处理</p>
+<p>2.属性绑定<br>绑定到UI控件的属性，也是逐帧tick，略优于函数绑定</p>
+<p>3.* 事件驱动更新<br>不需要tick，只有事件发生时才会调用，相比消耗极小</p>
+<h3 id="UMG-与-Slate"><a href="#UMG-与-Slate" class="headerlink" title="UMG 与 Slate"></a>UMG 与 Slate</h3><h4 id="Slate"><a href="#Slate" class="headerlink" title="Slate"></a>Slate</h4><p>虚幻中真正的UI框架<br>包含输入处理、事件分发、渲染等核心内容</p>
+<p>UMG是对Slate的封装，方便蓝图界面编辑以及虚幻的垃圾回收机制</p>
+<h5 id="SWidget剖析"><a href="#SWidget剖析" class="headerlink" title="SWidget剖析"></a>SWidget剖析</h5><p>SWidget是Slate层控件UI的基类<br>关键函数</p>
+<ul>
+<li>ComputeDesiredSize()</li>
+<li>ArrangeChildren()</li>
+<li>OnPaint()</li>
+<li>Event handlers （onclick()…）</li>
+</ul>
+<h3 id="性能-amp-优化"><a href="#性能-amp-优化" class="headerlink" title="性能&amp;优化"></a>性能&amp;优化</h3><h4 id="UMG渲染结构"><a href="#UMG渲染结构" class="headerlink" title="UMG渲染结构"></a>UMG渲染结构</h4><ul>
+<li>UserWidget 对应一个用户界面 </li>
+</ul>
+<h2 id="第五节课-物理"><a href="#第五节课-物理" class="headerlink" title="第五节课 物理"></a>第五节课 物理</h2><h3 id="几何体"><a href="#几何体" class="headerlink" title="几何体"></a>几何体</h3><ul>
+<li>Sphere</li>
+<li>Capsules （常用表示角色）</li>
+<li>Boxes</li>
+<li>Planes</li>
+<li>Convex Meshes （实心）（凸包多边形）</li>
+<li>Triangle Meshes （空心多边形）</li>
+<li>Height Fields </li>
+</ul>
+<h3 id="包围盒"><a href="#包围盒" class="headerlink" title="包围盒"></a>包围盒</h3><ul>
+<li>Sphere</li>
+<li>AABB （三个轴与坐标轴平行的最小六面体）</li>
+<li>OBB （不限轴向的AABB）</li>
+<li>DOP （离散有向多面体）</li>
+<li>Convex Hull</li>
+</ul>
+<h3 id="相交测试"><a href="#相交测试" class="headerlink" title="相交测试"></a>相交测试</h3><h3 id="碰撞查询"><a href="#碰撞查询" class="headerlink" title="碰撞查询"></a>碰撞查询</h3><p>用来检测假想中的碰撞</p>
+<ul>
+<li>射线扫射 （ray cast）</li>
+<li>扫掠 （sweep）</li>
+<li>重叠 （overlap）</li>
+</ul>
+<h3 id="空间划分（性能优化）"><a href="#空间划分（性能优化）" class="headerlink" title="空间划分（性能优化）"></a>空间划分（性能优化）</h3><h3 id="UE4中物理"><a href="#UE4中物理" class="headerlink" title="UE4中物理"></a>UE4中物理</h3><h3 id="碰撞响应属性"><a href="#碰撞响应属性" class="headerlink" title="碰撞响应属性"></a>碰撞响应属性</h3><p><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/4.27/zh-CN/InteractiveExperiences/Tracing/Overview/">https://docs.unrealengine.com/4.27/zh-CN/InteractiveExperiences/Tracing/Overview/</a></p>
+<h3 id="碰撞查询-1"><a href="#碰撞查询-1" class="headerlink" title="碰撞查询"></a>碰撞查询</h3><p>RayCast（射线投射） LineTraceXXX<br>Sweep（扫掠） 形状名TraceXXX<br>Overlap（重叠） 形状名OverlapXXX</p>
+<h3 id="物理材质"><a href="#物理材质" class="headerlink" title="物理材质"></a>物理材质</h3><p>定义了物体的一些物理属性，也可以指定表面类型（物理贴花）<br>实现定义摩擦力、恢复力、密度。<br>表面类型：用来表现物理交互（如被子弹击中）的效果。</p>
+<h3 id="物理动画"><a href="#物理动画" class="headerlink" title="物理动画"></a>物理动画</h3><p>基于动画及物理模拟的插值动画，（实现人物受伤之类的效果）</p>
+<h3 id="碰撞查询Filter"><a href="#碰撞查询Filter" class="headerlink" title="碰撞查询Filter"></a>碰撞查询Filter</h3><p>Filter可以控制碰撞查询中有哪些shape不需要包含进结果中<br>FilterFlag:PxQueryFlag::eSTATIC, PxQueryFlag::eDYNAMIC<br>查询的三个阶段 （有利于优化性能）<br>Broad Phase<br>            &lt;–Pre filter<br>Middle Phase<br>Narrow Phase<br>            &lt;–Post filter</p>
+<h2 id="第六节课-动画"><a href="#第六节课-动画" class="headerlink" title="第六节课 动画"></a>第六节课 动画</h2><p>ue4中主要讲的就是骨骼动画，<br>主要是分为骨骼和蒙皮</p>
+<p>SkeletalMesh 负责网格体蒙皮，渲染<br>PhysicsAsset 负责处理碰撞、布娃娃等系统<br>Skeleton 定义了骨骼的层级结构</p>
+<h3 id="UE动画蓝图"><a href="#UE动画蓝图" class="headerlink" title="UE动画蓝图"></a>UE动画蓝图</h3><p>Event Graph 添加动画相关的逻辑</p>
+<p>Anim Graph 管理动画的pose，一般用作动作叠加，动作融合之类的</p>
+<p>Animation Sequence<br>关键帧构成的动画序列，最基本的动画类型</p>
+<p>Local Space：有关父节点的偏移<br>Mesh Space：有关Root的偏移</p>
+<p>BlendSpace 提供了动画的融合功能，通过传入参数动态计算各个动画权重输入融合后的结果。<br>常见的有人物走路动画</p>
+<p>AimOffset是BlendSpace的一个子集，它是在MeshSpace下具有叠加属性的BlendSpace，专门用作武器瞄准的动画类型</p>
+<p>Montage是一种在编辑器中创建的动画资源，可以由若干的AnimSequence组成（可以自由衔接或跳转），设置Section和Slot，可以实现一些特殊的动画控制（动画智能循环、基于逻辑的动画切换）<br>（可以实现冲刺或者单发武器）<br>注意Montage中的RootMotion，可以实现root随着动画而位移（防止后面位置错乱衔接不上）</p>
+<h3 id="常用动画节点"><a href="#常用动画节点" class="headerlink" title="常用动画节点"></a>常用动画节点</h3><p>混合节点（Blend Nodes）<br>ApplyAdditive：在LocalSpace下叠加动画<br>ApplyMeshSpaceAdditive：在MeshSpace下叠加<br>Blend：把两个Pose混合<br>BlendBoneByChannel：指定一根骨骼和另一根融合<br>BlendMulti：同时混合多个Pose</p>
+<p>状态机：提供了图形化的方式来控制动画的切换（状态之间可以设置转换条件以及转换的融合相关数据）</p>
+<p>IK (Inverse Kinematics) 逆向运动学<br>Two Bone IK 限制3个骨骼，一般用于人物的四肢<br>FABRIK （Forward and Backward Reaching Inverse Kinematics）正向及反向的IK</p>
+<h3 id="资源获取"><a href="#资源获取" class="headerlink" title="资源获取"></a>资源获取</h3><p>这里讲了一些Epic商城有付费或者免费的动画，但往往都并不是同一套骨骼，没法用，就只能主动用骨骼的重定向管理器，把对应骨骼绑定好再重定向动画。</p>
+<h2 id="渲染基础"><a href="#渲染基础" class="headerlink" title="渲染基础"></a>渲染基础</h2><p>理论部分我就不做记录了，粗粗带过了点图形学的渲染部分。</p>
+<h3 id="UE4的材质系统"><a href="#UE4的材质系统" class="headerlink" title="UE4的材质系统"></a>UE4的材质系统</h3><p>光源类型<br>定向光源，天空光照，点光源，聚光源</p>
+<p>在材质编辑器中，通过可视化脚本编程，来创建HLSL代码<br>材质域、混合模式、着色模型（次表面、透明图层）</p>
+<p>粒子系统</p>
+<h2 id="网络同步"><a href="#网络同步" class="headerlink" title="网络同步"></a>网络同步</h2><p>网络角色和授权</p>
+<p>###Authority（授权）<br>拥有Actor的最终解释权</p>
+<p>Autonomous Proxy（自主代理）<br>能够自主的指向一些逻辑，接受授权的Actor的矫正（玩家Pawn）</p>
+<p>Simulated Proxy（模拟代理）<br>由授权的Actor完全控制（AI、其他玩家、场景中的可交互物品）</p>
+<h3 id="Net"><a href="#Net" class="headerlink" title="Net"></a>Net</h3><p>NetDriver负责监听握手连接等，转给对应的NetConnection处理<br>Server的NetDriver维护一份NetConnection列表，每个NetConnection代表一个玩家<br>Client的NetDriver维护一个NetConnection对应连接的服务器</p>
+<p>NetConnection不直接处理数据，把数据包转给对应的Channel处理</p>
+<p>Channel分为ControlChannel（发送连接相关）、VoiceChannel、ActorChannel（负责每个需要复制的Actor）  </p>
+<h3 id="同步方式"><a href="#同步方式" class="headerlink" title="同步方式"></a>同步方式</h3><p>属性同步<br>定期检查需要同步的Actor，发生变更就更新<br>在UPROPERTY中使用Replicated，ReplicatedUsing表示属性需要被同步<br>用DOREPLIFETIME_CONDITION(ClassName, VarName, COND_XXX)来标识在何时需要同步（比如REPNOTIFY_Alway或REPNOTIFY_OnChanged）<br>属性同步不能保证先后顺序</p>
+<p>RPC（远程过程调用）<br>只有执行时生效</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// actor.cpp</span><br><span class="line">if (GetLocalRole() == ROLE_Authority) // ROLE_AutonomousProxy, ROLE_SimulatedProxy</span><br><span class="line">&#123;</span><br><span class="line">  SetXXX();</span><br><span class="line">&#125; </span><br><span class="line">else </span><br><span class="line">&#123;</span><br><span class="line">  ServerSetXXX();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bool ServerSetXXX_Validate()</span><br><span class="line">&#123;</span><br><span class="line">  return true;</span><br><span class="line">&#125;</span><br><span class="line">void ServerSetXXX_Implementation()</span><br><span class="line">&#123;// 在服务器上调用了</span><br><span class="line">  SetXXX();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// actor.h</span><br><span class="line">void SetXXX();</span><br><span class="line"></span><br><span class="line">UFUNCTION(reliable, server, ...) // reliable, unreliable</span><br><span class="line">                                 // Server, Client, NetMulticast</span><br><span class="line">void ServerSetXXX();</span><br></pre></td></tr></table></figure>
+
+<p>移动同步</p>
+<h2 id="游戏AI"><a href="#游戏AI" class="headerlink" title="游戏AI"></a>游戏AI</h2><h3 id="自动寻路"><a href="#自动寻路" class="headerlink" title="自动寻路"></a>自动寻路</h3><p>A*算法，结合了Dijkstra和贪心<br>基于评估函数寻找最优路径，效率高，较准确。</p>
+<p>UE4使用Navigation Mesh计算地形，（体素化，生成区域，生成轮廓，生成多边形网格，生成高度细节）<br>用Recast寻路</p>
+<h3 id="行为树"><a href="#行为树" class="headerlink" title="行为树"></a>行为树</h3><p>行为树是由行为节点组成的树状结构，每个节点的执行会产生结果，传递给父节点，决定下一步的动作。<br>UE4中的行为树节点分为</p>
+<ul>
+<li><p>组合节点：控制节点，有一个或多个子节点<br>顺序节点（Sequence）：按顺序执行子节点，子节点出错立即停止运行，向上返回false。<br>选择节点（Selector）：按顺序执行子节点，一个子节点返回true就停止，向上返回true，子节点返回false，则尝试下一个子节点，全部子节点false才向上返回false。<br>平行节点（Parallel Node）：无条件遍历所有子节点。</p>
+</li>
+<li><p>修饰节点：有且只有一个子节点，将结果处理（修饰）之后，传给父节点<br>反相器（Invertor）、成功节点（Succeeder）、重复节点（Repeater）、重复直到失败（Repeater Until Fail）</p>
+</li>
+<li><p>叶子节点：1条件节点，判断条件是否成立之后返回。2执行节点，执行成功返回True。</p>
+</li>
+</ul>
+<p>UE4 中有黑板，存储行为树必要信息的资产</p>
+<h2 id="评价"><a href="#评价" class="headerlink" title="评价"></a>评价</h2><p>由于老师说讲课的ppt不能发给我们或者截图出来，所以本篇只限于一些文字记录。有些讲师讲的确实很不错，比方物理系统和网络同步那两节课，我觉得学到了不少。也有动画、AI这两节课我感觉没学到什么东西，作业都需要课后来找更多资料和教程。最后布置的作业也花了几天时间认真做了一下，虽说大部分是没什么意思的依葫芦画瓢，但是我觉得能从头到尾认真学完这门课也不错。</p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://d1gg12.github.io/2021/12/13/%E8%85%BE%E8%AE%AFUE4%E5%85%AC%E5%BC%80%E8%AF%BE%E7%AC%94%E8%AE%B0/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UE4/" rel="tag">UE4</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BC%80%E5%8F%91/" rel="tag">开发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F/" rel="tag">游戏</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+    
+      <a href="/2021/09/20/%E5%88%9D%E7%BA%A7%E4%BD%93%E7%A7%AF%E6%B8%B2%E6%9F%93/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">初级体积渲染</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "",
+    app_key: "",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2020-2021
+        <i class="ri-heart-fill heart_icon"></i> d1gg12
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        由 <a href="https://hexo.io" target="_blank">Hexo</a> 强力驱动
+        <span class="division">|</span>
+        主题 - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="https://gitee.com/d1gg12/blogimage/raw/master/blog's%20icon.png" alt="moon"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tools">工具</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+ 
+<script src="/js/dz.js"></script>
+ 
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=405242847&auto=0&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
+</body>
+
+</html>
