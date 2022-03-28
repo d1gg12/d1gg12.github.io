@@ -343,31 +343,11 @@
       
     <div class="article-entry" itemprop="articleBody">
        
-  <p>学习games202时，整理的笔记。<br>关于games202，我认为是讲到了一部分相比于games101进阶的实时渲染的东西，也涉及到了一些真正学术前沿的东西。但是想要仅仅通过这一门课了解实时渲染还是远远不够，其中不少内容也只是仅仅提了一下概念和思路，离具体实现还有不少距离。不过，闫老师讲的非常通俗易懂和有意思，单纯这一点就值得一听。</p>
-<h2 id="进阶-shadow-map"><a href="#进阶-shadow-map" class="headerlink" title="进阶 shadow map"></a>进阶 shadow map</h2><p>由于shadow map对深度测试时，难免会由于精度导致地面有自遮挡，此时可以增加一个bias。</p>
-<p>但是，由于增加了这个bias，就又会导致离地面近的遮挡没法被计算进去。</p>
-<p>总之，就是由于shadow map的分辨率不够，而产生的走样</p>
-<h3 id="percentage-closer-filtering-PCF"><a href="#percentage-closer-filtering-PCF" class="headerlink" title="percentage closer filtering (PCF)"></a>percentage closer filtering (PCF)</h3><p>基本思想：把原本shadow map要做的对于一个点的深度测试改为对于周围一些点的深度测试</p>
-<p>对于周围几个点比较深度并平均（而非对最终的阴影或者shadow map作模糊）</p>
-<h3 id="Percentage-Closer-Soft-Shadows-PCSS"><a href="#Percentage-Closer-Soft-Shadows-PCSS" class="headerlink" title="Percentage Closer Soft Shadows (PCSS)"></a>Percentage Closer Soft Shadows (PCSS)</h3><p>在使用PCF的过程中发现，如果PCF取的周围采样点的范围较大时，正好可以作出软阴影（由于光源是由宽度的，导致遮挡物越远离被遮挡物时，阴影越模糊）的效果。</p>
-<p><img src="https://s2.loli.net/2022/03/27/pd6O7ukU4GKfXyC.png" alt="pcss.png"></p>
-<p>图中可以看到，想要知道W_penumbra，需要知道d_receiver</p>
-<p>于是，PCSS的过程可以分为三部分</p>
-<ol>
-<li>根据某个采样大小计算某位置是否被遮挡，若被遮挡，计算平均d_receiver</li>
-<li>根据d_receiver计算应该对该点使用的采样大小W_penumbra</li>
-<li>作以W_penumbra为采样半径的PCF</li>
-</ol>
-<h3 id="Variance-Soft-Shadow-Mapping-VSSM"><a href="#Variance-Soft-Shadow-Mapping-VSSM" class="headerlink" title="Variance Soft Shadow Mapping (VSSM)"></a>Variance Soft Shadow Mapping (VSSM)</h3><p>PCSS的第一步和第三步太复杂，于是发现可以不对范围内所有点采样，而是使用随机采样（有噪声）</p>
-<p>从另一个角度来说，PCF的目的就是求出一个范围内百分之多少的深度比shading point中的深度要浅，我们可以将这个比例认为是正态分布的。<br>于是，我们只需要求出均值和方差即可。<br>其中均值可以使用mipmap/二位前缀和来计算<br>方差可以用 V(X) = E(X^2) - E^2(X) 来计算，其中E(X)已经算出来，只需要平方，而E(X^2)可以在渲染Shadow Map时就多存一张X^2的图</p>
-<p>有了方差和均值就可以用CDF(X) 或 Erf(X)误差函数来求那个x对应的所需要的比例 或者直接查表</p>
-<p>更大胆的假设，引入切比雪夫不等式：<img src="https://s2.loli.net/2022/03/27/OEq2dcwZz4G6J7A.png" alt="vssm.png"><br>（实时渲染领域喜欢把不等式当作近似相等来用） 回答了t不会超过百分之几的问题（只能算t位于右半边的情况）</p>
-<p>缺陷：如果分布的峰值多于一个（无法用切比雪夫以及正态分布来估计了）会产生漏光现象</p>
-<h3 id="Moment-Shadow-Mapping-（MSM"><a href="#Moment-Shadow-Mapping-（MSM" class="headerlink" title="Moment Shadow Mapping （MSM)"></a>Moment Shadow Mapping （MSM)</h3><p>思路：使用更高级的函数来表现某一种分布</p>
-<h3 id="Distance-field-soft-shadows"><a href="#Distance-field-soft-shadows" class="headerlink" title="Distance field soft shadows"></a>Distance field soft shadows</h3><p>SDF：signed distance function 描述空间中的任意一点到最近的物体间的距离（非常好用，可以用来做几何上的过渡，也可以用来做ray-matching）<br>快的一批的同时效果还好，唯一的缺点是需要3维上的存储空间</p>
-<p>以ray-matching举例：从一个shading point出发，可以向光线传播的方向“安全地”前进该点的SDF值，到达那个点时，又可以同理继续向光线传播方向“安全地”前进，由此实现ray-matching</p>
-<p>当SDF应用到阴影领域中，<img src="https://s2.loli.net/2022/03/27/642BNekQdCxiUM9.png" alt="sdf.png"><br>求shading point O即是计算min(θ1,θ2,θ3) 该值越大，收入到的光照越多，越“白”；该值越小，收入的光照越少，越“暗”<br>该角度 = arcsin(SDF(x)/(P-O)) 可以简化为 min(k*SDF(x)/(P-O), 1.0) （还可以用k值来调节软阴影的强弱）</p>
-<h2 id="Environment-Lighting-环境光照"><a href="#Environment-Lighting-环境光照" class="headerlink" title="Environment Lighting 环境光照"></a>Environment Lighting 环境光照</h2> 
+  <p>学习games202时，整理的笔记。<br>关于games202，我认为是讲到了一部分相比于games101进阶的实时渲染的东西，也涉及到了一些真正学术前沿的东西。但是想要仅仅通过这一门课了解实时渲染还是远远不够，其中不少内容也只是仅仅提了一下概念和思路，离具体实现还有不少距离。不过，闫老师讲的非常通俗易懂和有意思，单纯这一点就值得一听。</p> 
+      <a class="article-more-link" href="/2021/08/08/%E9%AB%98%E8%B4%A8%E9%87%8F%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%93/"
+        >阅读更多...</a
+      >
+       
       <!-- reward -->
       
     </div>

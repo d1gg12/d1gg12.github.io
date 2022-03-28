@@ -101,6 +101,8 @@
     <div class="article-entry" itemprop="articleBody">
        
   <p>学习games202时，整理的笔记。<br>关于games202，我认为是讲到了一部分相比于games101进阶的实时渲染的东西，也涉及到了一些真正学术前沿的东西。但是想要仅仅通过这一门课了解实时渲染还是远远不够，其中不少内容也只是仅仅提了一下概念和思路，离具体实现还有不少距离。不过，闫老师讲的非常通俗易懂和有意思，单纯这一点就值得一听。</p>
+<span id="more"></span>
+
 <h2 id="进阶-shadow-map"><a href="#进阶-shadow-map" class="headerlink" title="进阶 shadow map"></a>进阶 shadow map</h2><p>由于shadow map对深度测试时，难免会由于精度导致地面有自遮挡，此时可以增加一个bias。</p>
 <p>但是，由于增加了这个bias，就又会导致离地面近的遮挡没法被计算进去。</p>
 <p>总之，就是由于shadow map的分辨率不够，而产生的走样</p>
