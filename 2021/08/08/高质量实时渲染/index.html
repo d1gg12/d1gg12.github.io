@@ -76,7 +76,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1k</span>
+            <span class="post-count">2.6k</span>
         </span>
     </span>
 
@@ -85,7 +85,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3 分钟</span>
+            <span class="post-count">9 分钟</span>
         </span>
     </span>
 </div>
@@ -126,7 +126,90 @@
 <h3 id="Distance-field-soft-shadows"><a href="#Distance-field-soft-shadows" class="headerlink" title="Distance field soft shadows"></a>Distance field soft shadows</h3><p>SDF：signed distance function 描述空间中的任意一点到最近的物体间的距离（非常好用，可以用来做几何上的过渡，也可以用来做ray-matching）<br>快的一批的同时效果还好，唯一的缺点是需要3维上的存储空间</p>
 <p>以ray-matching举例：从一个shading point出发，可以向光线传播的方向“安全地”前进该点的SDF值，到达那个点时，又可以同理继续向光线传播方向“安全地”前进，由此实现ray-matching</p>
 <p>当SDF应用到阴影领域中，<img src="https://s2.loli.net/2022/03/27/642BNekQdCxiUM9.png" alt="sdf.png"><br>求shading point O即是计算min(θ1,θ2,θ3) 该值越大，收入到的光照越多，越“白”；该值越小，收入的光照越少，越“暗”<br>该角度 = arcsin(SDF(x)/(P-O)) 可以简化为 min(k*SDF(x)/(P-O), 1.0) （还可以用k值来调节软阴影的强弱）</p>
-<h2 id="Environment-Lighting-环境光照"><a href="#Environment-Lighting-环境光照" class="headerlink" title="Environment Lighting 环境光照"></a>Environment Lighting 环境光照</h2> 
+<h2 id="Environment-Lighting-环境光照"><a href="#Environment-Lighting-环境光照" class="headerlink" title="Environment Lighting 环境光照"></a>Environment Lighting 环境光照</h2><h3 id="Shading-from-environment-lighting-（不考虑环境光照产生的阴影的情况）"><a href="#Shading-from-environment-lighting-（不考虑环境光照产生的阴影的情况）" class="headerlink" title="Shading from environment lighting （不考虑环境光照产生的阴影的情况）"></a>Shading from environment lighting （不考虑环境光照产生的阴影的情况）</h3><p>环境光贴图</p>
+<p>只能默认是光照从无限远来</p>
+<p>Image-Based Lighting(IBL)解rendering equation</p>
+<ol>
+<li>把light分量拆出来<br><img src="https://s2.loli.net/2022/03/28/a8QV9xscPHCuXTk.png" alt="IBL1.png"></li>
+</ol>
+<p>方框中相当于对light分量进行滤波</p>
+<p><img src="https://s2.loli.net/2022/03/28/U4kwBdsK7lAImHf.png" alt="IBL2.png"></p>
+<p>将需要采样的值（左图） 转化为 直接查询对应点的值（滤波完已表示一块的范围）</p>
+<ol start="2">
+<li>针对某一种BRDF</li>
+</ol>
+<p><img src="https://s2.loli.net/2022/03/28/rE29ufsWNFAktph.png" alt="IBL3.png"></p>
+<p>可以将BRDF转换成了R0（粗糙度）与θ（角度）两个自变量的结果，由此可以预处理出一张对应不同R0和θ对应的值的表，查表来算</p>
+<h3 id="Shadow-from-environment-lighting-（计算了阴影的环境光照）"><a href="#Shadow-from-environment-lighting-（计算了阴影的环境光照）" class="headerlink" title="Shadow from environment lighting （计算了阴影的环境光照）"></a>Shadow from environment lighting （计算了阴影的环境光照）</h3><p>很难（光源太多时只计算最强几个光）</p>
+<h4 id="引入知识：product-integral-用于近似"><a href="#引入知识：product-integral-用于近似" class="headerlink" title="引入知识：product_integral 用于近似"></a>引入知识：product_integral 用于近似</h4><p><img src="https://s2.loli.net/2022/03/28/2B5g9HSNpsmI3zu.png" alt="product_integral.png"></p>
+<p>上式可以认为是某种滤波，f(x),g(x)其中一个是低频时，则结果是低频</p>
+<h4 id="引入知识：Spherical-Harmonics-球谐函数"><a href="#引入知识：Spherical-Harmonics-球谐函数" class="headerlink" title="引入知识：Spherical Harmonics 球谐函数"></a>引入知识：Spherical Harmonics 球谐函数</h4><p><img src="https://s2.loli.net/2022/03/28/Tn7z8okabc6tphR.png" alt="sh.png"></p>
+<p>一系列的基函数，用于表示任意的球面函数<br>求每个基函数系数的过程也称投影</p>
+<p>应用于预计算<br><img src="https://s2.loli.net/2022/03/28/9UvQMZJFHxwolCN.jpg" alt="sh2.jpg"></p>
+<p>球谐函数的特性：某个基函数的旋转可以表示为同一阶（上图中l相等）其他几个基函数乘以参数<br>缺点：只能用于固定场景，光源一变化就需要重新计算虚函数</p>
+<h4 id="Precomputed-Radiance-Transfer-PRT"><a href="#Precomputed-Radiance-Transfer-PRT" class="headerlink" title="Precomputed Radiance Transfer (PRT)"></a>Precomputed Radiance Transfer (PRT)</h4><p><img src="https://s2.loli.net/2022/03/28/SuhF9CAcIMNWGpf.png" alt="prt1.png"></p>
+<p>将 rendering equation 写成 lighting、visibility、BRDF 三项</p>
+<p>lighting是球面函数、visibility也是球面函数、BRDF也可以描述成球面函数</p>
+<p>然后就使用预计算算出这三项</p>
+<p>原视频还提到了如何计算diffuse的prt和glossy的prt</p>
+<p>以及还有许多能代替SH表示球面函数的基函数，如wavelet对于高频效果更好</p>
+<h2 id="实时全局光照"><a href="#实时全局光照" class="headerlink" title="实时全局光照"></a>实时全局光照</h2><p>核心问题是解决一次间接光照</p>
+<h3 id="Reflective-Shadow-Maps-RSM"><a href="#Reflective-Shadow-Maps-RSM" class="headerlink" title="Reflective Shadow Maps (RSM)"></a>Reflective Shadow Maps (RSM)</h3><p>假设接收到直接光照的物体假设为diffuse的</p>
+<h3 id="Light-Propagation-Volumes-LPV"><a href="#Light-Propagation-Volumes-LPV" class="headerlink" title="Light Propagation Volumes (LPV)"></a>Light Propagation Volumes (LPV)</h3><p>把空间分成许多个立方体，认为单个立方体内部的环境光强度均等</p>
+<h3 id="Voxel-Global-Illumination-VXGI"><a href="#Voxel-Global-Illumination-VXGI" class="headerlink" title="Voxel Global Illumination (VXGI)"></a>Voxel Global Illumination (VXGI)</h3><p>用层级树来将空间划分为许多立方体，计算light ray以及camera ray</p>
+<h2 id="Real-Time-Global-Illumination-screen-space-屏幕空间内的全局光照"><a href="#Real-Time-Global-Illumination-screen-space-屏幕空间内的全局光照" class="headerlink" title="Real-Time Global Illumination (screen space) 屏幕空间内的全局光照"></a>Real-Time Global Illumination (screen space) 屏幕空间内的全局光照</h2><p>共有的缺点：可获取的信息局限于屏幕空间内</p>
+<h3 id="Screen-Space-Ambient-Occlusion-SSAO"><a href="#Screen-Space-Ambient-Occlusion-SSAO" class="headerlink" title="Screen Space Ambient Occlusion (SSAO)"></a>Screen Space Ambient Occlusion (SSAO)</h3><p>屏幕空间环境光遮蔽<br>对于某个点，在点朝向摄像机的180°范围（半径一定范围）内，有多少被挡住，挡住的越多，要加的阴影越多</p>
+<p>超越屏幕空间的环境光遮蔽（HBAO）</p>
+<h3 id="Screen-Space-Directional-Occlusion-SSDO"><a href="#Screen-Space-Directional-Occlusion-SSDO" class="headerlink" title="Screen Space Directional Occlusion (SSDO)"></a>Screen Space Directional Occlusion (SSDO)</h3><p>对于某个点，在点朝向摄像机的180°范围（半径一定范围）内，有多少没被挡住（无限长），挡到的越少，间接光越多</p>
+<h3 id="Screen-Space-Reflection-SSR"><a href="#Screen-Space-Reflection-SSR" class="headerlink" title="Screen Space Reflection (SSR)"></a>Screen Space Reflection (SSR)</h3><p>相当于在屏幕空间内做光线追踪<br>需要有法线信息的G-Buffer</p>
+<p>难点在于做linear raymatch<br>对于一个shading point，camera ray通过法线反射的方向每次前进一个小距离，看看这个位置有没有被挡到（被挡到的点认为对这个shading point有间接光的贡献）</p>
+<p>优化：Hierarchical ray trace（用类似mipmap的思路）</p>
+<h2 id="Real-Time-Physically-Based-Materials-surface-models"><a href="#Real-Time-Physically-Based-Materials-surface-models" class="headerlink" title="Real-Time Physically-Based Materials (surface models)"></a>Real-Time Physically-Based Materials (surface models)</h2><p>基于物理的材质</p>
+<h3 id="Microfacet-BRDF-（微表面模型）"><a href="#Microfacet-BRDF-（微表面模型）" class="headerlink" title="Microfacet BRDF （微表面模型）"></a>Microfacet BRDF （微表面模型）</h3><p><img src="https://s2.loli.net/2022/03/29/qwCMufQ4PAnESzT.png" alt="pbr1.png"></p>
+<h4 id="Normal-Distribution-Function-NDF"><a href="#Normal-Distribution-Function-NDF" class="headerlink" title="Normal Distribution Function (NDF)"></a>Normal Distribution Function (NDF)</h4><p>Beckmann 法线分布<br><img src="https://s2.loli.net/2022/03/29/tsTxhEUGSyCLev8.png" alt="pbr2.png"></p>
+<p>ggx：更长的拖尾，更平滑<br><img src="https://s2.loli.net/2022/03/29/GJbXjDTeSrmivAa.png" alt="pbr3.png"></p>
+<h4 id="Shadowing-Masking-Term"><a href="#Shadowing-Masking-Term" class="headerlink" title="Shadowing-Masking Term"></a>Shadowing-Masking Term</h4><p>一起算太复杂，拆开成shadowing项和masking项<br><img src="https://s2.loli.net/2022/03/29/GI8jkYW5JvlXhTM.png" alt="pbr4.png"></p>
+<p>由于microfacet模型中会相互遮挡，导致较粗糙时有一部分光照强度是内部的间接光照贡献的（一般被忽略了），导致叫粗糙时会比较暗</p>
+<p>使用 The Kulla-Conty Approximation 把损失的光照补回来<br><img src="https://s2.loli.net/2022/03/29/M8Aahcsu1K4zDS5.png" alt="pbr5.png"><br>其中 E_avg只和粗糙度相关，E(μ)和粗糙度和μ（角度）相关，可以打表预计算</p>
+<p>当microfacet模型有颜色项的时候，需要再乘以<br><img src="https://s2.loli.net/2022/03/29/PZTOocdbVJX4IRp.png" alt="pbr6.png"><br>其中F_avg来自于菲涅尔项<br><img src="https://s2.loli.net/2022/03/29/tMv1Zf8gq6a9mIb.png" alt="pbr7.png"></p>
+<h3 id="Disney’s-Principled-BRDF"><a href="#Disney’s-Principled-BRDF" class="headerlink" title="Disney’s Principled BRDF"></a>Disney’s Principled BRDF</h3><p>正常的BRDF用起来不好用，艺术家们不懂物理</p>
+<p><img src="https://s2.loli.net/2022/03/29/gcPYKOR32fM6tF8.png" alt="pbr8.png"></p>
+<h2 id="Linearly-Transformed-Cosines-LTC"><a href="#Linearly-Transformed-Cosines-LTC" class="headerlink" title="Linearly Transformed Cosines  (LTC)"></a>Linearly Transformed Cosines  (LTC)</h2><p>用于多边形光源的方法</p>
+<h2 id="Non-Photorealistic-Rendering-NPR"><a href="#Non-Photorealistic-Rendering-NPR" class="headerlink" title="Non-Photorealistic Rendering (NPR)"></a>Non-Photorealistic Rendering (NPR)</h2><h2 id="Real-Time-Ray-Tracing-RTRT"><a href="#Real-Time-Ray-Tracing-RTRT" class="headerlink" title="Real-Time Ray Tracing (RTRT)"></a>Real-Time Ray Tracing (RTRT)</h2><p>现在的显卡水平可以达到1SPP path tracing =<br>1 rasterization (primary) +<br>1 ray (primary visibility) +<br>1 ray (secondary bounce) +<br>1 ray (secondary vis.)</p>
+<h3 id="Tempora-denoise"><a href="#Tempora-denoise" class="headerlink" title="Tempora denoise"></a>Tempora denoise</h3><p>根据前几帧降噪这一帧<br>计算motion vectors</p>
+<p><img src="https://s2.loli.net/2022/03/29/fxItaTDs6j5NpL1.png" alt="rtrt.png"></p>
+<p>缺点：没法“倒着走”、有拖影、切换镜头时效果差、无法对阴影、反射等产生作用</p>
+<p>其中拖影可以用减少前几帧的权重减轻</p>
+<h3 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h3><p>高斯滤波，去高频，留低频</p>
+<h4 id="Bilateral-Filtering-（双边滤波）"><a href="#Bilateral-Filtering-（双边滤波）" class="headerlink" title="Bilateral Filtering （双边滤波）"></a>Bilateral Filtering （双边滤波）</h4><p>认为颜色差别特别大时，则认为是边界，不相互产生贡献</p>
+<h4 id="Joint-Bilateral-Filtering-（联合双边滤波）"><a href="#Joint-Bilateral-Filtering-（联合双边滤波）" class="headerlink" title="Joint Bilateral Filtering （联合双边滤波）"></a>Joint Bilateral Filtering （联合双边滤波）</h4><p>特别适用于RTRT，蒙特卡洛的结果</p>
+<p>需要利用渲染时产生的G-Buffer（一般考虑depth、normal、color等）</p>
+<h4 id="大范围滤波的实现"><a href="#大范围滤波的实现" class="headerlink" title="大范围滤波的实现"></a>大范围滤波的实现</h4><p>1.<br><img src="https://s2.loli.net/2022/03/29/W9J8G3nDuzjM6tH.png" alt="rtrt2.png"><br>先横着做一次1 * N的滤波，再竖着做一次N * 1的滤波 （太大的不行，瑕疵会明显）</p>
+<ol start="2">
+<li><img src="https://s2.loli.net/2022/03/29/g5hbniY7FSDmBTv.png" alt="rtrt3.png"><br>多次层级式的滤波（5 * 5大小），每次5 * 5的样本间间隔+1</li>
+</ol>
+<h4 id="Outlier-removal"><a href="#Outlier-removal" class="headerlink" title="Outlier removal"></a>Outlier removal</h4><p>由于蒙特卡洛方法的作用，可能会有一些超级亮的点（&gt;255），如果滤波范围较小，只会把这个点变成一块光斑</p>
+<p>需要把这些outlier在滤波之前就处理掉</p>
+<ol>
+<li>找到：用个7 * 7的大小，得到这些点的均值和方差</li>
+</ol>
+<p><img src="https://s2.loli.net/2022/03/29/ND4WTgcMVp97Umb.png" alt="rtrt4.png"></p>
+<ol start="2">
+<li>把这个点clamp到一个有效的范围内</li>
+</ol>
+<h4 id="Spatiotemporal-Variance-Guided-Filtering-SVGF"><a href="#Spatiotemporal-Variance-Guided-Filtering-SVGF" class="headerlink" title="Spatiotemporal Variance-Guided Filtering (SVGF)"></a>Spatiotemporal Variance-Guided Filtering (SVGF)</h4><p>考虑切平面的深度、法线的差异、<br>特别的部分：<br><img src="https://s2.loli.net/2022/03/29/7EeJ9nGf1IwZzhu.png" alt="rtrt5.png"></p>
+<p>SVGF中的V，方差项，如果这个区域的方差很大，则认为这个区域不值得考虑</p>
+<h4 id="Recurrent-AutoEncoder-RAE"><a href="#Recurrent-AutoEncoder-RAE" class="headerlink" title="Recurrent AutoEncoder (RAE)"></a>Recurrent AutoEncoder (RAE)</h4><p>神经网络的东西</p>
+<h2 id="Practical-Industrial-solutions"><a href="#Practical-Industrial-solutions" class="headerlink" title="Practical Industrial solutions"></a>Practical Industrial solutions</h2><h3 id="Temporal-Anti-Aliasing-TAA"><a href="#Temporal-Anti-Aliasing-TAA" class="headerlink" title="Temporal Anti-Aliasing (TAA)"></a>Temporal Anti-Aliasing (TAA)</h3><p>将一个像素内分为四个，超采样，但是每帧只用其中一个感知，然后混合四帧的结果</p>
+<h3 id="DLSS-1-0-2-0"><a href="#DLSS-1-0-2-0" class="headerlink" title="DLSS 1.0/2.0"></a>DLSS 1.0/2.0</h3><p>DLSS1.0 完全神经网络数据驱动、效果差<br>DLSS2.0 更多地使用Temporal的信息</p>
+<h3 id="Deferred-Shading-延迟渲染管线"><a href="#Deferred-Shading-延迟渲染管线" class="headerlink" title="Deferred Shading 延迟渲染管线"></a>Deferred Shading 延迟渲染管线</h3><p>第一次只更新depth buffer，而不渲染<br>第二次才真正渲染</p>
+<p>从所有光源shading-&gt;可见的光源的shading</p>
+<h3 id="Tiled-Shading"><a href="#Tiled-Shading" class="headerlink" title="Tiled Shading"></a>Tiled Shading</h3><p><img src="https://s2.loli.net/2022/03/29/h2Z4BqrX5fGocae.png" alt="rtrt6.png"><br>利用光源的作用范围有限</p>
+<h3 id="Glustered-Shading"><a href="#Glustered-Shading" class="headerlink" title="Glustered Shading"></a>Glustered Shading</h3><p>更进一步的tiled shading，将小条再切成小块</p>
+<h3 id="Level-of-Detail-Solutions"><a href="#Level-of-Detail-Solutions" class="headerlink" title="Level of Detail Solutions"></a>Level of Detail Solutions</h3><p>也称cascaded，经常用于cascaded shadow map、cascaded LPV、geometric LoD（Nanite in UE5）</p>
+<h3 id="Global-Illumination-Solutions"><a href="#Global-Illumination-Solutions" class="headerlink" title="Global Illumination Solutions"></a>Global Illumination Solutions</h3><p>软光栅光线追踪高分辨率SDF、低分辨率SDF、RSM、Probes<br>硬件光栅：在简化场景中使用RTRT</p>
+<p>Lumen in UE5就是以上SDF、RSM、简化场景硬件RTRT的结合</p>
+ 
       <!-- reward -->
       
     </div>
