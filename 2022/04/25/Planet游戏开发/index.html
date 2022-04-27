@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta name="description" content="d1gg12&#39;s blog" />
+      
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>Planet游戏开发 |  moon</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="https://s2.loli.net/2022/03/27/EGMWLeI43rQ5hOd.png" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
+
+      <!-- mermaid -->
+      
+    </head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-Planet游戏开发"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Planet游戏开发
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/04/25/Planet%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" class="article-date">
+  <time datetime="2022-04-25T13:01:36.000Z" itemprop="datePublished">2022-04-25</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">1.6k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">7 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="想法"><a href="#想法" class="headerlink" title="想法"></a>想法</h2><p>想搞个类似《mountain》的禅意游戏，主角是一颗星球，能看到四季交替、水流、最好还有生物。同时希望能多学习积累一些pcg，shader编写之类的技术（方便炫技）。</p>
+<p>一开始看了一些类似《minecraft》生成的文章，但是思考了下还是和我要的不太一样，</p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=lctXaT9pxA0">https://www.youtube.com/watch?v=lctXaT9pxA0</a> 后来看到了这个视频，真不错啊，大概上就是我想要的样子，但是这个管主的这个系列偏向于造出整个星系，类似《无人深空》的效果，能登陆每颗行星，能在上面建造破坏，整个星系还根据物理计算真正的轨道运作。我觉得我的目标更专注于一颗行星，尽可能做到细节。</p>
+<p>持续更新中，不知道去暑假实习之前能不能做出个样子！</p>
+<span id="more"></span>
+
+<h2 id="实现建模球体"><a href="#实现建模球体" class="headerlink" title="实现建模球体"></a>实现建模球体</h2><p>四种建模球体的方法<br><a target="_blank" rel="noopener" href="https://medium.com/@oscarsc/four-ways-to-create-a-mesh-for-a-sphere-d7956b825db4">https://medium.com/@oscarsc/four-ways-to-create-a-mesh-for-a-sphere-d7956b825db4</a></p>
+<p>视频作者使用的是两个四棱锥来建模球体，有更均匀的三角形分布<br><img src="https://s2.loli.net/2022/04/27/paXkAQSVuw67yYt.png" alt="image.png"></p>
+<p>我使用的是球体立方体的方法，便于后期做LOD，但是有不少接缝、着色相关的问题</p>
+<p>一开始啥都不会，对着这篇教程学习如何用程序建立mesh的，另外翻译的一般，可以前往原文<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/96084686">https://zhuanlan.zhihu.com/p/96084686</a></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[<span class="meta">ExecuteInEditMode</span>]</span><br><span class="line">[<span class="meta">RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CubeSphereScript</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">int</span> gridSize;</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">float</span> radius = <span class="number">1.0f</span>;</span><br><span class="line">	<span class="keyword">public</span> ComputeShader shader;</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">float</span> testvalue;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> Mesh mesh;</span><br><span class="line">	<span class="keyword">private</span> Vector3[] vertices;</span><br><span class="line">	<span class="keyword">private</span> Vector3[] normals;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (!UnityEditor.EditorApplication.isPlaying)</span><br><span class="line">        &#123;</span><br><span class="line">			Initialize();</span><br><span class="line">			Generate();</span><br><span class="line">		&#125;	</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Initialize</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">		<span class="comment">// use random seed to Initialize world</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Test</span>(<span class="params"></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; vertices.Length; i ++)</span><br><span class="line">        &#123;</span><br><span class="line">			vertices[i] += <span class="number">0.5f</span> * Mathf.Sin(vertices[i].y * testvalue) * normals[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Generate</span>(<span class="params"></span>)</span></span><br><span class="line">	&#123;</span><br><span class="line">		GetComponent&lt;MeshFilter&gt;().mesh = mesh = <span class="keyword">new</span> Mesh();</span><br><span class="line">		mesh.name = <span class="string">&quot;Procedural Cube&quot;</span>;</span><br><span class="line">		CreateVertices();</span><br><span class="line">		Test();</span><br><span class="line">		mesh.vertices = vertices;</span><br><span class="line">		mesh.normals = normals;</span><br><span class="line">		CreateTriangles();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateVertices</span>(<span class="params"></span>)</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">int</span> cornerVertices = <span class="number">8</span>;</span><br><span class="line">		<span class="built_in">int</span> edgeVertices = (gridSize * <span class="number">3</span> - <span class="number">3</span>) * <span class="number">4</span>;</span><br><span class="line">		<span class="built_in">int</span> faceVertices = (gridSize - <span class="number">1</span>) * (gridSize - <span class="number">1</span>) * <span class="number">6</span>;</span><br><span class="line">		vertices = <span class="keyword">new</span> Vector3[cornerVertices + edgeVertices + faceVertices];</span><br><span class="line">		normals = <span class="keyword">new</span> Vector3[vertices.Length];</span><br><span class="line"></span><br><span class="line">		<span class="built_in">int</span> v = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="built_in">int</span> y = <span class="number">0</span>; y &lt;= gridSize; y++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="built_in">int</span> x = <span class="number">0</span>; x &lt;= gridSize; x++)</span><br><span class="line">			&#123;</span><br><span class="line">				SetVertex(v++, x, y, <span class="number">0</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">for</span> (<span class="built_in">int</span> z = <span class="number">1</span>; z &lt;= gridSize; z++)</span><br><span class="line">			&#123;</span><br><span class="line">				SetVertex(v++, gridSize, y, z);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">for</span> (<span class="built_in">int</span> x = gridSize - <span class="number">1</span>; x &gt;= <span class="number">0</span>; x--)</span><br><span class="line">			&#123;</span><br><span class="line">				SetVertex(v++, x, y, gridSize);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">for</span> (<span class="built_in">int</span> z = gridSize - <span class="number">1</span>; z &gt; <span class="number">0</span>; z--)</span><br><span class="line">			&#123;</span><br><span class="line">				SetVertex(v++, <span class="number">0</span>, y, z);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="built_in">int</span> z = <span class="number">1</span>; z &lt; gridSize; z++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="built_in">int</span> x = <span class="number">1</span>; x &lt; gridSize; x++)</span><br><span class="line">			&#123;</span><br><span class="line">				SetVertex(v++, x, gridSize, z);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (<span class="built_in">int</span> z = <span class="number">1</span>; z &lt; gridSize; z++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="built_in">int</span> x = <span class="number">1</span>; x &lt; gridSize; x++)</span><br><span class="line">			&#123;</span><br><span class="line">				SetVertex(v++, x, <span class="number">0</span>, z);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">SetVertex</span>(<span class="params"><span class="built_in">int</span> i, <span class="built_in">int</span> x, <span class="built_in">int</span> y, <span class="built_in">int</span> z</span>)</span></span><br><span class="line">	&#123;</span><br><span class="line">		Vector3 v = <span class="keyword">new</span> Vector3(x, y, z) * <span class="number">2f</span> / gridSize - Vector3.one;</span><br><span class="line">        <span class="built_in">float</span> x2 = v.x * v.x;</span><br><span class="line">        <span class="built_in">float</span> y2 = v.y * v.y;</span><br><span class="line">        <span class="built_in">float</span> z2 = v.z * v.z;</span><br><span class="line">        Vector3 s;</span><br><span class="line">        s.x = v.x * Mathf.Sqrt(<span class="number">1f</span> - y2 / <span class="number">2f</span> - z2 / <span class="number">2f</span> + y2 * z2 / <span class="number">3f</span>);</span><br><span class="line">        s.y = v.y * Mathf.Sqrt(<span class="number">1f</span> - x2 / <span class="number">2f</span> - z2 / <span class="number">2f</span> + x2 * z2 / <span class="number">3f</span>);</span><br><span class="line">        s.z = v.z * Mathf.Sqrt(<span class="number">1f</span> - x2 / <span class="number">2f</span> - y2 / <span class="number">2f</span> + x2 * y2 / <span class="number">3f</span>);</span><br><span class="line">        normals[i] = s;</span><br><span class="line"></span><br><span class="line">		vertices[i] = normals[i] * radius;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CreateTriangles</span>(<span class="params"></span>)</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">int</span> quads = gridSize * gridSize * <span class="number">6</span>;</span><br><span class="line">		<span class="built_in">int</span>[] triangles = <span class="keyword">new</span> <span class="built_in">int</span>[quads * <span class="number">6</span>];</span><br><span class="line">		<span class="built_in">int</span> ring = gridSize * <span class="number">4</span>;</span><br><span class="line">		<span class="built_in">int</span> t = <span class="number">0</span>, v = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="built_in">int</span> y = <span class="number">0</span>; y &lt; gridSize; y++, v++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="built_in">int</span> q = <span class="number">0</span>; q &lt; ring - <span class="number">1</span>; q++, v++)</span><br><span class="line">			&#123;</span><br><span class="line">				t = SetQuad(triangles, t, v, v + <span class="number">1</span>, v + ring, v + ring + <span class="number">1</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			t = SetQuad(triangles, t, v, v - ring + <span class="number">1</span>, v + ring, v + <span class="number">1</span>);</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		t = CreateTopFace(triangles, t, ring);</span><br><span class="line">		t = CreateBottomFace(triangles, t, ring);</span><br><span class="line"></span><br><span class="line">		mesh.triangles = triangles;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="built_in">int</span> <span class="title">CreateTopFace</span>(<span class="params"><span class="built_in">int</span>[] triangles, <span class="built_in">int</span> t, <span class="built_in">int</span> ring</span>)</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">int</span> v = ring * gridSize;</span><br><span class="line">		<span class="keyword">for</span> (<span class="built_in">int</span> x = <span class="number">0</span>; x &lt; gridSize - <span class="number">1</span>; x++, v++)</span><br><span class="line">		&#123;</span><br><span class="line">			t = SetQuad(triangles, t, v, v + <span class="number">1</span>, v + ring - <span class="number">1</span>, v + ring);</span><br><span class="line">		&#125;</span><br><span class="line">		t = SetQuad(triangles, t, v, v + <span class="number">1</span>, v + ring - <span class="number">1</span>, v + <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">		<span class="built_in">int</span> vMin = ring * (gridSize + <span class="number">1</span>) - <span class="number">1</span>;</span><br><span class="line">		<span class="built_in">int</span> vMid = vMin + <span class="number">1</span>;</span><br><span class="line">		<span class="built_in">int</span> vMax = v + <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="built_in">int</span> z = <span class="number">1</span>; z &lt; gridSize - <span class="number">1</span>; z++, vMin--, vMid++, vMax++)</span><br><span class="line">		&#123;</span><br><span class="line">			t = SetQuad(triangles, t, vMin, vMid, vMin - <span class="number">1</span>, vMid + gridSize - <span class="number">1</span>);</span><br><span class="line">			<span class="keyword">for</span> (<span class="built_in">int</span> x = <span class="number">1</span>; x &lt; gridSize - <span class="number">1</span>; x++, vMid++)</span><br><span class="line">			&#123;</span><br><span class="line">				t = SetQuad(</span><br><span class="line">					triangles, t,</span><br><span class="line">					vMid, vMid + <span class="number">1</span>, vMid + gridSize - <span class="number">1</span>, vMid + gridSize);</span><br><span class="line">			&#125;</span><br><span class="line">			t = SetQuad(triangles, t, vMid, vMax, vMid + gridSize - <span class="number">1</span>, vMax + <span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="built_in">int</span> vTop = vMin - <span class="number">2</span>;</span><br><span class="line">		t = SetQuad(triangles, t, vMin, vMid, vTop + <span class="number">1</span>, vTop);</span><br><span class="line">		<span class="keyword">for</span> (<span class="built_in">int</span> x = <span class="number">1</span>; x &lt; gridSize - <span class="number">1</span>; x++, vTop--, vMid++)</span><br><span class="line">		&#123;</span><br><span class="line">			t = SetQuad(triangles, t, vMid, vMid + <span class="number">1</span>, vTop, vTop - <span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		t = SetQuad(triangles, t, vMid, vTop - <span class="number">2</span>, vTop, vTop - <span class="number">1</span>);</span><br><span class="line">		<span class="keyword">return</span> t;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="built_in">int</span> <span class="title">CreateBottomFace</span>(<span class="params"><span class="built_in">int</span>[] triangles, <span class="built_in">int</span> t, <span class="built_in">int</span> ring</span>)</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">int</span> v = <span class="number">1</span>;</span><br><span class="line">		<span class="built_in">int</span> vMid = vertices.Length - (gridSize - <span class="number">1</span>) * (gridSize - <span class="number">1</span>);</span><br><span class="line">		t = SetQuad(triangles, t, ring - <span class="number">1</span>, vMid, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">		<span class="keyword">for</span> (<span class="built_in">int</span> x = <span class="number">1</span>; x &lt; gridSize - <span class="number">1</span>; x++, v++, vMid++)</span><br><span class="line">		&#123;</span><br><span class="line">			t = SetQuad(triangles, t, vMid, vMid + <span class="number">1</span>, v, v + <span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		t = SetQuad(triangles, t, vMid, v + <span class="number">2</span>, v, v + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">		<span class="built_in">int</span> vMin = ring - <span class="number">2</span>;</span><br><span class="line">		vMid -= gridSize - <span class="number">2</span>;</span><br><span class="line">		<span class="built_in">int</span> vMax = v + <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="built_in">int</span> z = <span class="number">1</span>; z &lt; gridSize - <span class="number">1</span>; z++, vMin--, vMid++, vMax++)</span><br><span class="line">		&#123;</span><br><span class="line">			t = SetQuad(triangles, t, vMin, vMid + gridSize - <span class="number">1</span>, vMin + <span class="number">1</span>, vMid);</span><br><span class="line">			<span class="keyword">for</span> (<span class="built_in">int</span> x = <span class="number">1</span>; x &lt; gridSize - <span class="number">1</span>; x++, vMid++)</span><br><span class="line">			&#123;</span><br><span class="line">				t = SetQuad(</span><br><span class="line">					triangles, t,</span><br><span class="line">					vMid + gridSize - <span class="number">1</span>, vMid + gridSize, vMid, vMid + <span class="number">1</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			t = SetQuad(triangles, t, vMid + gridSize - <span class="number">1</span>, vMax + <span class="number">1</span>, vMid, vMax);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="built_in">int</span> vTop = vMin - <span class="number">1</span>;</span><br><span class="line">		t = SetQuad(triangles, t, vTop + <span class="number">1</span>, vTop, vTop + <span class="number">2</span>, vMid);</span><br><span class="line">		<span class="keyword">for</span> (<span class="built_in">int</span> x = <span class="number">1</span>; x &lt; gridSize - <span class="number">1</span>; x++, vTop--, vMid++)</span><br><span class="line">		&#123;</span><br><span class="line">			t = SetQuad(triangles, t, vTop, vTop - <span class="number">1</span>, vMid, vMid + <span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		t = SetQuad(triangles, t, vTop, vTop - <span class="number">1</span>, vMid, vTop - <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> t;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">int</span> <span class="title">SetQuad</span>(<span class="params"><span class="built_in">int</span>[] triangles, <span class="built_in">int</span> i, <span class="built_in">int</span> v00, <span class="built_in">int</span> v10, <span class="built_in">int</span> v01, <span class="built_in">int</span> v11</span>)</span></span><br><span class="line">	&#123;</span><br><span class="line">		triangles[i] = v00;</span><br><span class="line">		triangles[i + <span class="number">1</span>] = triangles[i + <span class="number">4</span>] = v01;</span><br><span class="line">		triangles[i + <span class="number">2</span>] = triangles[i + <span class="number">3</span>] = v10;</span><br><span class="line">		triangles[i + <span class="number">5</span>] = v11;</span><br><span class="line">		<span class="keyword">return</span> i + <span class="number">6</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中Test()函数是我对球体表面的一个尝试修改，视频中使用了compute shader来做这件事，目前我还在研究怎么使用compute shader…所以暂时还是在c#中实现了下</p>
+<p>在editmode下效果不错!<br><a target="_blank" rel="noopener" href="https://s2.loli.net/2022/04/27/iGU8fMdQcsB9hZW.png">image.png</a> </p>
+<p>不过当我尝试增加gridSize，也就是球体立方体的每个面边长，发现105以下好好的，但高于105就会感觉抽风了，少了一部分，一部分又乱了套。开始我以为是代码哪里的某个变量是不是到了int类型的上界，仔细检查了好久…结果是因为unity的一个静态批处理中，一个mesh的默认顶点上限是64000个，而105这个神奇的数字之后正好超了…</p>
+<p>解决方法就是把这个球体拆分成几个部分，或者也可以直接上LOD，不过这个问题不大，只需要稍作标记，之后再解决。</p>
+<h2 id="用compute-shader来生成复杂地形"><a href="#用compute-shader来生成复杂地形" class="headerlink" title="用compute shader来生成复杂地形"></a>用compute shader来生成复杂地形</h2><p>平滑各种用几何函数产生的僵硬接缝<br><a target="_blank" rel="noopener" href="https://iquilezles.org/articles/smin/">https://iquilezles.org/articles/smin/</a></p>
+<h2 id="links"><a href="#links" class="headerlink" title="links"></a>links</h2><p>不错的博客，从简单的角度理解地形生成<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/KillerAery/p/11509470.html">https://www.cnblogs.com/KillerAery/p/11509470.html</a></p>
+<p>关于游戏中随机噪声的总结<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/47959352">https://zhuanlan.zhihu.com/p/47959352</a></p>
+<p>鱼宝推荐的视频，这正是我想要做出的效果<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=lctXaT9pxA0">https://www.youtube.com/watch?v=lctXaT9pxA0</a></p>
+<p>学习unity的mesh生成<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/96084686">https://zhuanlan.zhihu.com/p/96084686</a></p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://d1gg12.github.io/2022/04/25/Planet%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/unity/" rel="tag">unity</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/" rel="tag">图形学</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+    
+      <a href="/2022/03/20/%E9%AB%98%E8%B4%A8%E9%87%8F%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%93/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">高质量实时渲染</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "",
+    app_key: "",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2020-2022
+        <i class="ri-heart-fill heart_icon"></i> d1gg12
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        由 <a href="https://hexo.io" target="_blank">Hexo</a> 强力驱动
+        <span class="division">|</span>
+        主题 - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="https://s2.loli.net/2022/03/27/EGMWLeI43rQ5hOd.png" alt="moon"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tools">工具</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/img/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+ 
+<script src="/js/dz.js"></script>
+ 
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="86"
+        src="//music.163.com/outchain/player?type=2&id=1824020871&auto=0&height=66"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
+</body>
+
+</html>
